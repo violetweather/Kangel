@@ -1,4 +1,5 @@
-const { SlashCommandBuilder, EmbedBuilder, Client, italic } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField } = require('discord.js');
+const moment = require('moment');
 
 module.exports = {
 	category: 'utility',
@@ -19,34 +20,48 @@ module.exports = {
 		if (interaction.options.getSubcommand() === 'user') {
 			
 			if(interaction.options.getUser('target')) {
-				let mention = await interaction.options.getUser('target')
-				await mention.banner
-				
-				let embed = new EmbedBuilder()
-				.setTitle("User Information")
-				.setColor(mention.hexAccentColor || 'Random')
-				.addFields(
-					{ name: "Display Name", value: `${mention.globalName}`, inline: true},
+				let mention = await interaction.options.getUser('target').fetch({force: true})
+
+				let embed = new EmbedBuilder();
+				if(mention.bot) {
+					embed.setTitle("Bot Information")
+				} else {
+					embed.setTitle("User Information")
+				}
+				embed.setColor(mention.hexAccentColor || 'Random')
+				embed.addFields(
+					{ name: "Display Name", value: `${mention.globalName || mention.username}`, inline: true},
 					{ name: "Username", value: `${mention.username}`, inline: true},
-					{ name: "Created", value: `${mention.createdAt}`}
+					{ name: "ID", value: mention.id, inline: true},
+					{ name: "Creation Date", value: `${moment.utc(mention.createdAt).format('YYYY/MM/DD')}`, inline: true},
+					{ name: "Join Date", value: `${moment.utc(mention.joinedAt).format('YYYY/MM/DD')}`, inline: true},
+					// { name: "YI2E Flag", value: "Disabled", inline: true}
 				)
-				.setImage(`https://cdn.discordapp.com/banners/${mention.id}/${mention.banner}?size=1024`)
-				.setThumbnail(`https://cdn.discordapp.com/avatars/${mention.id}/${mention.avatar}`)
+
+				if(interaction.guild) {
+					embed.addFields(
+						{ name: "Infractions", value: "0", inline: true}
+					)
+				}
+				embed.setImage(mention.bannerURL({ dynamic: true , size: 2048, format: "png" }))
+				embed.setThumbnail(mention.displayAvatarURL())
 
 				await interaction.reply({embeds: [embed]})
 			} else {
-				let user = await interaction.user;
+				let user = await interaction.user.fetch({force:true});
 
 				let embed = new EmbedBuilder()
 				.setColor(user.hexAccentColor || 'Random')
 				.setTitle("User Information")
 				.addFields(
-					{ name: "Display Name", value: `${user.globalName}`, inline: true},
+					{ name: "Display Name", value: `${user.globalName || user.username}`, inline: true},
 					{ name: "Username", value: `${user.username}`, inline: true},
-					{ name: "Created", value: `${user.createdAt}`}
+					{ name: "ID", value: user.id, inline: true},
+					{ name: "Creation Date", value: `${moment.utc(user.createdAt).format('YYYY/MM/DD')}`, inline: true},
+					{ name: "Join Date", value: `${moment.utc(user.joinedAt).format('YYYY/MM/DD')}`, inline: true}
 				)
-				.setImage(`https://cdn.discordapp.com/banners/${user.id}/${user.banner}?size=1024`)
-			    .setThumbnail(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}`)
+				.setImage(user.bannerURL())
+			    .setThumbnail(user.displayAvatarURL())
 
 				await interaction.reply({embeds: [embed]})
 			}
@@ -54,12 +69,18 @@ module.exports = {
 
 		if (interaction.options.getSubcommand() === 'server') {
 
+			console.log((await interaction.guild.channels.fetch()).map((m) => m))
+
 			let serverEmbed = new EmbedBuilder()
 			.setTitle("Server Information")
+			.setColor("Random")
 			.addFields(
 				{ name: "Server Name", value: interaction.guild.name, inline: true},
-				{ name: "Member Count", value: `${interaction.guild.memberCount}`, inline: true},
-				{ name: "Owner", value: `${await interaction.client.users.fetch(interaction.guild.ownerId)}`}
+				{ name: "Server ID", value: interaction.guild.id, inline: true},
+				{ name: "Members", value: `${interaction.guild.memberCount}`, inline: true},
+				{ name: "Owner", value: `${await interaction.client.users.fetch(interaction.guild.ownerId)}`, inline: true},
+				{ name: "Channels", value: `E${(await interaction.guild.channels.fetch()).filter((m) => m.type === '0').size}`, inline: true},
+				{ name: "Voice Channels", value: `T${(await interaction.guild.channels.fetch()).filter((m) => m.type === '2').size}`, inline: true}
 			)
 			.setImage(`https://cdn.discordapp.com/banners/${interaction.guild.id}/${interaction.guild.banner}`)
 			.setThumbnail(`https://cdn.discordapp.com/icons/${interaction.guild.id}/${interaction.guild.icon}`)
