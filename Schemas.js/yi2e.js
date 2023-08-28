@@ -1,7 +1,7 @@
 const { model, Schema } = require('mongoose');
 
 let yi2eSchema = new Schema({
-    AuthID: Number,
+    Auths: Array,
     CaseID: Number,
     GuildID: Number,
     UserID: Number,

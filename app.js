@@ -37,6 +37,8 @@ for (const file of eventFiles) {
 	}
 }
 
+yukong.cooldowns = new Collection();
+
 yukong.on(Events.ClientReady, () => logger.info('The bot is online'));
 yukong.on(Events.Debug, m => logger.debug(m));
 yukong.on(Events.Warn, m => logger.warn(m));
