@@ -73,7 +73,7 @@ module.exports = {
 					{ name: "Creation Date", value: `${moment.utc(user.createdAt).format('YYYY/MM/DD')}`, inline: true},
 					{ name: "Join Date", value: `${moment.utc(user.joinedAt).format('YYYY/MM/DD')}`, inline: true}
 				)
-				.setImage(user.bannerURL())
+				.setImage(user.bannerURL({ dynamic: true , size: 2048, format: "png" }))
 			    .setThumbnail(user.displayAvatarURL())
 
 				const userData = await repSchema.findOne({
