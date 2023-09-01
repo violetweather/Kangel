@@ -29,6 +29,10 @@ module.exports = {
         const repComment = interaction.options.getString('comment')
         const repPoint = interaction.options.getString('reputation')
         
+        if(repUser.id === interaction.user.id) {
+            return await interaction.reply({ content: "Can't give or take away reputation from yourself!", ephemeral: true });
+        }
+
         const embed = new EmbedBuilder()
         .addFields({ name: 'User', value: `${repUser.username}`})
         .addFields({ name: 'Comment', value: `${repComment}`})
@@ -68,7 +72,7 @@ module.exports = {
                 embed.setColor("Green")
                 await interaction.reply({ embeds: [embed]})
             } else if (repPoint === 'neg') {
-                await repSchema.updateOne({ "UserID": repUser.id}, { Author: interaction.user.username, Reputation: `${userData.Reputation-1}`, Comment: `${repComment}`, Updated: `${Date.now}`})
+                await repSchema.updateOne({ "UserID": repUser.id}, { Author: interaction.user.username, Reputation: `${userData.Reputation-1}`, Comment: `${repComment}`})
                 embed.setDescription(`You gave a negative point to **${repUser.username}**`)
                 embed.setColor("Red")
                 await interaction.reply({ embeds: [embed]})
