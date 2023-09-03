@@ -1,11 +1,10 @@
 const { model, Schema } = require('mongoose');
 
 let yi2eSchema = new Schema({
-    Auths: Array,
-    CaseID: Number,
-    GuildID: Number,
+    isYI2EEnabled: Boolean,
+    Guilds: Array,
     UserID: Number,
-    Notes: String,
+    AutomatedMessage: String,
     Updated: { type: Date, default: Date.now}
 });
 

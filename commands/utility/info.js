@@ -45,10 +45,17 @@ module.exports = {
 				})
 
 				if(userData) {
-					embed.addFields(
-						{ name: "Reputation", value: `${userData.Reputation}`, inline: true}
-					)
-					embed.setDescription(`**Last User Comment** \n *${userData.Comment}* - **@${userData.Author}**`)
+					if(userData.Reputation < 0) {
+						embed.addFields(
+							{ name: "Reputation", value: `${userData.Reputation} <:dislike:1147098514371923978>`, inline: true}
+						)
+					} else {
+						embed.addFields(
+							{ name: "Reputation", value: `${userData.Reputation} <:like:1147098482633621504>`, inline: true}
+						)
+					}
+					
+					embed.setDescription(`**Last Reputation Comment** \n - *${userData.Comment}* \n Commented by **@${userData.Author}**`)
 				}
 
 				// if(interaction.guild) {
@@ -81,10 +88,17 @@ module.exports = {
 				})
 
 				if(userData) {
-					embed.addFields(
-						{ name: "Reputation", value: `${userData.Reputation}`, inline: true}
-					)
-					embed.setDescription(`**Last User Comment** \n *${userData.Comment}* - **@${userData.Author}**`)
+					if(userData.Reputation < 0) {
+						embed.addFields(
+							{ name: "Reputation", value: `${userData.Reputation} <:dislike:1147098514371923978>`, inline: true}
+						)
+					} else {
+						embed.addFields(
+							{ name: "Reputation", value: `${userData.Reputation} <:like:1147098482633621504>`, inline: true}
+						)
+					}
+					
+					embed.setDescription(`**Last Reputation Comment** \n - *${userData.Comment}* \n Commented by **@${userData.Author}**`)
 				}
 
 				await interaction.reply({embeds: [embed]})

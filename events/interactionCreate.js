@@ -8,7 +8,7 @@ module.exports = {
 		const command = interaction.client.commands.get(interaction.commandName);
 
 		if (!command) {
-			console.error(`No command matching ${interaction.commandName} was found.`);
+			await interaction.reply({ content: `No command matching ${interaction.commandName} was found or you do not have sufficient permissions.`, ephemeral: true})
 			return;
 		}
 

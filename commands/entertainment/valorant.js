@@ -3,7 +3,7 @@ const { API } = require('vandal.js');
 const moment = require('moment')
 
 module.exports = {
-    category: "utility",
+    category: "entertainment",
 	data: new SlashCommandBuilder()
 		.setName('valorant')
 		.setDescription('Get the valorant stats for a public tracker.gg account')
