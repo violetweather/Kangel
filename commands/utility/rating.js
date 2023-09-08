@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField } = require('discord.js');
 const moment = require('moment');
-const repSchema = require('../../Schemas.js/rep')
+const starRate = require('../../Schemas.js/rate')
+const starRatings = require('../../Schemas.js/rateComments')
 
 module.exports = {
 //    cooldown: 86400,
@@ -16,11 +17,11 @@ module.exports = {
             .setDescription('Rate from 1 to 5 stars your experience with the user!')
             .setRequired(true)
             .addChoices(
-                {name: '★★★★★', value: 'five_star'},
-                {name: '★★★★', value: 'four_star'},
-                {name: '★★★', value: 'three_star'},
-                {name: '★★', value: 'two_star'},
-                {name: '★', value: 'one_star'},
+                {name: '★★★★★', value: '5'},
+                {name: '★★★★', value: '4'},
+                {name: '★★★', value: '3'},
+                {name: '★★', value: '2'},
+                {name: '★', value: '1'},
             ))
         .addStringOption(option => 
             option.setName('comment')
@@ -28,17 +29,29 @@ module.exports = {
             .setMaxLength(30)
             .setRequired(true)),
 	async execute(interaction) {
-        const repUser = interaction.options.getUser('user')
-        const repComment = interaction.options.getString('comment')
-        const repPoint = interaction.options.getString('reputation')
+        const starUser = interaction.options.getUser('user')
+        const starAuthor = interaction.user.id
+        const starComment = interaction.options.getString('comment')
+        const starRating = interaction.options.getString('stars')
         
-        // if(repUser.id === interaction.user.id) {
-        //     return await interaction.reply({ content: "Can't give or take away reputation from yourself!", ephemeral: true });
-        // }
+        if(starUser.id === starAuthor) {
+            return await interaction.reply({
+                content: 'Can\'t give a rating to yourself!',
+                ephemeral: true,
+            })
+        }
 
-        // const embed = new EmbedBuilder()
-        // .addFields({ name: 'User', value: `${repUser.username}`})
-        // .addFields({ name: 'Comment', value: `${repComment}`})
+        const embed = new EmbedBuilder()
+        .addFields({ name: 'User', value: `${starUser.username}`})
+        .addFields({ name: 'Comment', value: `${starComment}`})
+
+        const userData = await starRate.findOne({
+            UserID: starUser.id
+        })
+
+        if(!userData) {
+
+        }
 
         // const userData = await repSchema.findOne({
         //     UserID: repUser.id

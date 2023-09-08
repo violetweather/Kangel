@@ -1,11 +1,11 @@
 const { model, Schema } = require('mongoose');
 
-let repSchema = new Schema({
+let starSchema = new Schema({
     Author: String,
     UserID: Number,
-    Reputation: Number,
+    StarRating: Number,
     Comment: String,
     Updated: { type: Date, default: Date.now}
 });
 
-module.exports = model('repSchema', repSchema);
+module.exports = model('starSchema', starSchema);

@@ -1,10 +1,15 @@
 const { model, Schema } = require('mongoose');
 
 let userRepComments = new Schema({
-    Author: String,
     UserID: Number,
-    Reputation: Number,
-    Comments: Array,
+    Ratings: {
+        Comments: {
+            Author: Number,
+            Comment: String,
+            Time: String,
+        }
+    },
+
     Updated: { type: Date, default: Date.now}
 });
 
