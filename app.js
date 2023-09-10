@@ -3,8 +3,10 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const logger = require('./logger');
+const logs = require("discord-logs")
+const { handleLogs } = require('./utilities/logHandler')
 
-const yukong = new Client({ intents: [GatewayIntentBits.Guilds] });
+const yukong = new Client({ intents: [Object.keys(GatewayIntentBits)] });
 
 yukong.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
@@ -37,6 +39,10 @@ for (const file of eventFiles) {
 	}
 }
 
+logs(yukong, {
+	debug: true
+});
+
 yukong.cooldowns = new Collection();
 
 yukong.on(Events.ClientReady, () => logger.info('The bot is online'));
@@ -44,4 +50,6 @@ yukong.on(Events.Debug, m => logger.debug(m));
 yukong.on(Events.Warn, m => logger.warn(m));
 yukong.on(Events.Error, m => logger.error(m));
 
-yukong.login(process.env.TOKEN);
+yukong.login(process.env.TOKEN).then(() => {
+	handleLogs(yukong);
+})
