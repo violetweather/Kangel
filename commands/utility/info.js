@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField } = require('discord.js');
 const moment = require('moment');
-const starRatings = require('../../Schemas.js/rateComments')
 
 module.exports = {
 	category: 'utility',

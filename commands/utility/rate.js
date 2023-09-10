@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField } = require('discord.js');
 const moment = require('moment');
-const starRate = require('../../Schemas.js/rate')
-const starRatings = require('../../Schemas.js/rateComments')
+const starRate = require('../../Schemas.js/rateSchema')
+const logger = require('../../logger');
 
 module.exports = {
 //    cooldown: 86400,
@@ -50,7 +50,16 @@ module.exports = {
         })
 
         if(!userData) {
-
+            starRate.create({
+                Author: interaction.user.username,
+                UserID: starUser.id,
+                StarRating: starRating,
+                Comment: starComment
+            })
+        } else if(userData) {
+            logger.info("User data :)")
+        } else if(error) {
+            return console.log(error);
         }
 
         // const userData = await repSchema.findOne({

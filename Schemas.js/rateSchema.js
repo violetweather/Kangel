@@ -8,4 +8,10 @@ let starSchema = new Schema({
     Updated: { type: Date, default: Date.now}
 });
 
+let userRepComments = new Schema({
+    Ratings: [starSchema],
+    Updated: { type: Date, default: Date.now}
+});
+
+module.exports = model('userRepComments', userRepComments);
 module.exports = model('starSchema', starSchema);
