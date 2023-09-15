@@ -3,8 +3,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const logger = require('./logger');
-const logs = require("discord-logs")
-const { handleLogs } = require('./utilities/logHandler')
 
 const yukong = new Client({ intents: [Object.keys(GatewayIntentBits)] });
 
@@ -38,10 +36,6 @@ for (const file of eventFiles) {
 		yukong.on(event.name, (...args) => event.execute(...args));
 	}
 }
-
-logs(yukong, {
-	debug: true
-});
 
 yukong.cooldowns = new Collection();
 
