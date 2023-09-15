@@ -30,6 +30,8 @@ module.exports = {
 				console.error(error);
 				await interaction.reply(`There was an error while reloading a command \`${command.data.name}\`:\n\`${error.message}\``);
 			}
+		} else {
+			await interaction.reply({ content: 'You are not authorized to run this command.', ephemeral: true})
 		}
 	},
 };

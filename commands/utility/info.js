@@ -34,7 +34,7 @@ module.exports = {
 				embed.addFields(
 					{ name: "Display Name", value: `${mention.globalName || mention.username}`, inline: true},
 					{ name: "Username", value: `${mention.username}`, inline: true},
-					{ name: "ID", value: mention.id, inline: true},
+					{ name: "ID", value: mention.id, inline: false},
 					{ name: "Creation Date", value: `${moment.utc(mention.createdAt).format('YYYY-MM-DD')}`, inline: true},
 					{ name: "Join Date", value: `${moment.utc(mention.joinedAt).format('YYYY-MM-DD')}`, inline: true},
 					// { name: "YI2E Flag", value: "Disabled", inline: true}
@@ -56,7 +56,7 @@ module.exports = {
 
 					embed.setDescription(`**Last User Revieiw** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
 					embed.addFields(
-						{ name: "Average Rating:", value: `${ratings || userFilterReviews.StarRating}/5 ★`, inline: true}
+						{ name: "Average Rating:", value: `${ratings.toFixed(2) || userFilterReviews.StarRating}/5 ★`, inline: true}
 					)
 				}
 
@@ -73,7 +73,7 @@ module.exports = {
 				.addFields(
 					{ name: "Display Name", value: `${user.globalName || user.username}`, inline: true},
 					{ name: "Username", value: `${user.username}`, inline: true},
-					{ name: "ID", value: user.id, inline: true},
+					{ name: "ID", value: user.id, inline: false},
 					{ name: "Creation Date", value: `${moment.utc(user.createdAt).format('YYYY-MM-DD')}`, inline: true},
 					{ name: "Join Date", value: `${moment.utc(user.joinedAt).format('YYYY-MM-DD')}`, inline: true}
 				)
@@ -97,7 +97,7 @@ module.exports = {
 
 					embed.setDescription(`**Last User Revieiw** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
 					embed.addFields(
-						{ name: "Average Rating:", value: `${ratingse || userFilterReviews.StarRating}/5 ★`, inline: true}
+						{ name: "Average Rating:", value: `${ratingse.toFixed(2) || userFilterReviews.StarRating}/5 ★`, inline: true}
 					)
 				}
 				await interaction.reply({embeds: [embed]})
