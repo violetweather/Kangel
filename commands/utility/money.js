@@ -28,7 +28,7 @@ module.exports = {
         let currency = currencyAPIRes.data
 
         let embed = new EmbedBuilder()
-        .setDescription(`Converted from **${currencyAmount} ${currencyFrom.toUpperCase()}** to **${currency.converted_amount.toFixed(2)} ${currencyTo.toUpperCase()}**`)
+        .setDescription(`Converted from **${currencyAmount.toLocaleString()} ${currencyFrom.toUpperCase()}** to **${currency.converted_amount.toLocaleString()} ${currencyTo.toUpperCase()}**`)
         .setColor('Green')
 
         await interaction.reply({embeds: [embed]})
