@@ -16,7 +16,7 @@ module.exports = {
         .addStringOption(option => 
             option.setName('input')
             .setDescription('Your translation input.')
-            .setMaxLength(2000)
+            .setMaxLength(950)
             .setRequired(true)),
     async execute(interaction) {
         const toLang = interaction.options.getString('to', true);
@@ -41,9 +41,8 @@ module.exports = {
         let translateFunction = await newTranslate()
 
         let embed = new EmbedBuilder()
-        .setTitle(`Translating to ${langMatch[0].language}`)
         .setColor('Blue')
-        .setDescription(`${decodeURIComponent(translateFunction)}`)
+        .setDescription(`**Translating From:** \n ${input} \n **${langMatch[0].language}:** \n ${decodeURIComponent(translateFunction)}`)
 
         await interaction.reply({embeds: [embed]})
     }

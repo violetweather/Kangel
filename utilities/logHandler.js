@@ -7,7 +7,6 @@ function handleLogs(client) {
         let data = await logSchema.findOne({ GuildID: guildId })
             if (!data) return;
             const LogChannel = client.channels.cache.get(data.LogChannelID);
-            console.log(LogChannel)
             if(!LogChannel) return;
             embed.setTimestamp();
 

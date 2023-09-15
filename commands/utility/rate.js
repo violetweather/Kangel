@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField } = require('discord.js');
 const moment = require('moment');
-const starRate = require('../../Schemas.js/rateSchema')
+const User = require('../../Schemas.js/rateSchema')
 const logger = require('../../logger');
 
 module.exports = {
@@ -45,65 +45,69 @@ module.exports = {
         .addFields({ name: 'User', value: `${starUser.username}`})
         .addFields({ name: 'Comment', value: `${starComment}`})
 
-        const userData = await starRate.findOne({
+        const user = await User.findOne({
             UserID: starUser.id
         })
 
-        if(!userData) {
-            starRate.create({
-                Author: interaction.user.username,
+        async function createComment() {
+            User.create({
                 UserID: starUser.id,
+                Ratings: [
+                    {
+                        AuthorID: interaction.user.id,
+                        Author: interaction.user.username,
+                        Comment: starComment,
+                        StarRating: starRating,
+                    }
+                ],
+            })
+            return;
+        }
+
+        async function userAlreadyComment() {
+            await User.updateOne({ "UserID": starUser.id, "Ratings.AuthorID": interaction.user.id }, { $set: {
+                'Ratings.$.Author': interaction.user.username,
+                'Ratings.$.StarRating': starRating,
+                'Ratings.$.Comment': starComment
+            }})
+        }
+
+        const userAlreadyCommented =  await User.findOne({ "UserID": starUser.id, "Ratings.AuthorID": interaction.user.id})
+
+        if(!user) {
+            let embed = new EmbedBuilder()
+            .setColor("Green")
+            .setDescription(`You've given **${starUser.username}** a **${starRating} star rating**! With the following comment: \n "${starComment}"`)
+
+            await interaction.reply({embeds: [embed]})
+
+            return createComment()
+        } else if(user) {
+            if(userAlreadyCommented) {
+                let embed = new EmbedBuilder()
+                .setColor("Orange")
+                .setDescription(`You've edited a rating for **${starUser.username}** with a **${starRating} star rating**! \n *With the following comment*: \n "${starComment}"`)
+    
+                await interaction.reply({embeds: [embed]})
+                await userAlreadyComment()
+                return;
+            }
+
+            let embed = new EmbedBuilder()
+            .setColor("Green")
+            .setDescription(`You've given **${starUser.username}** a **${starRating} star rating**! With the following comment: \n "${starComment}"`)
+
+            await interaction.reply({embeds: [embed]})
+
+            await User.updateOne({ "UserID": starUser.id}, { $push: { Ratings: {
+                AuthorID: interaction.user.id,
+                Author: interaction.user.username,
                 StarRating: starRating,
                 Comment: starComment
-            })
-        } else if(userData) {
-            logger.info("User data :)")
+            }}})
+            return;
         } else if(error) {
             return console.log(error);
         }
-
-        // const userData = await repSchema.findOne({
-        //     UserID: repUser.id
-        // })
-
-        // if(!userData) {
-        //     if(repPoint === 'pos') {
-        //         repSchema.create({
-        //             Author: interaction.user.username,
-        //             UserID: repUser.id,
-        //             Reputation: 1,
-        //             Comment: repComment,
-        //         })
-
-        //         embed.setDescription(`You gave a reputation point to **${repUser.username}**`)
-        //         embed.setColor("Green")
-        //         await interaction.reply({ embeds: [embed]})
-        //     } else if (repPoint === 'neg') {
-        //         repSchema.create({
-        //             Author: interaction.user.username,
-        //             UserID: repUser.id,
-        //             Reputation: -1,
-        //             Comment: repComment,
-        //         })
-
-        //         embed.setDescription(`You gave a negative point to **${repUser.username}**`)
-        //         embed.setColor("Red")
-        //         await interaction.reply({ embeds: [embed]})
-        //     }
-        // } else if (userData) {
-        //     if(repPoint === 'pos') {
-        //         await repSchema.updateOne({ "UserID": repUser.id}, { Author: interaction.user.username, Reputation: `${userData.Reputation+1}`, Comment: `${repComment}`})
-        //         embed.setDescription(`You gave a reputation point to **${repUser.username}**`)
-        //         embed.setColor("Green")
-        //         await interaction.reply({ embeds: [embed]})
-        //     } else if (repPoint === 'neg') {
-        //         await repSchema.updateOne({ "UserID": repUser.id}, { Author: interaction.user.username, Reputation: `${userData.Reputation-1}`, Comment: `${repComment}`})
-        //         embed.setDescription(`You gave a negative point to **${repUser.username}**`)
-        //         embed.setColor("Red")
-        //         await interaction.reply({ embeds: [embed]})
-        //     }
-        // } else if (error) {
-        //     return console.log(err);
-        // }
     }
 }

@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField } = require('discord.js');
 const moment = require('moment');
+const User = require('../../Schemas.js/rateSchema')
 
 module.exports = {
 	category: 'utility',
@@ -39,29 +40,26 @@ module.exports = {
 					// { name: "YI2E Flag", value: "Disabled", inline: true}
 				)
 
-				const userData = await repSchema.findOne({
+				const user = await User.findOne({
 					UserID: mention.id
 				})
 
-				if(userData) {
-					if(userData.Reputation < 0) {
-						embed.addFields(
-							{ name: "Reputation", value: `${userData.Reputation} <:dislike:1147098514371923978>`, inline: true}
-						)
-					} else {
-						embed.addFields(
-							{ name: "Reputation", value: `${userData.Reputation} <:like:1147098482633621504>`, inline: true}
-						)
-					}
-					
-					embed.setDescription(`**Last Reputation Comment** \n - *${userData.Comment}* \n Commented by **@${userData.Author}**`)
+				if(user) {
+					let userFilterReviews = user.Ratings.pop();
+					let ratings = 0;
+
+					user.Ratings.forEach((obj, index) => {
+						ratings = (ratings + obj.StarRating)
+					})
+
+					ratings = ratings / user.Ratings.length;
+
+					embed.setDescription(`**Last User Revieiw** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
+					embed.addFields(
+						{ name: "Average Rating:", value: `${ratings || userFilterReviews.StarRating}/5 ★`, inline: true}
+					)
 				}
 
-				// if(interaction.guild) {
-				// 	embed.addFields(
-				// 		{ name: "Infractions", value: "0", inline: true}
-				// 	)
-				// }
 				embed.setImage(mention.bannerURL({ dynamic: true , size: 2048, format: "png" }))
 				embed.setThumbnail(mention.displayAvatarURL())
 
@@ -80,26 +78,28 @@ module.exports = {
 					{ name: "Join Date", value: `${moment.utc(user.joinedAt).format('YYYY-MM-DD')}`, inline: true}
 				)
 				.setImage(user.bannerURL({ dynamic: true , size: 2048, format: "png" }))
-			    .setThumbnail(user.displayAvatarURL())
+			    .setThumbnail(user.displayAvatarURL());
 
-				const userData = await repSchema.findOne({
+
+				const userSelf = await User.findOne({
 					UserID: user.id
 				})
 
-				if(userData) {
-					if(userData.Reputation < 0) {
-						embed.addFields(
-							{ name: "Reputation", value: `${userData.Reputation} <:dislike:1147098514371923978>`, inline: true}
-						)
-					} else {
-						embed.addFields(
-							{ name: "Reputation", value: `${userData.Reputation} <:like:1147098482633621504>`, inline: true}
-						)
-					}
-					
-					embed.setDescription(`**Last Reputation Comment** \n - *${userData.Comment}* \n Commented by **@${userData.Author}**`)
-				}
+				if(userSelf) {
+					let userFilterReviews = userSelf.Ratings.pop();
+					let ratingse = 0;
 
+					userSelf.Ratings.forEach((obj, index) => {
+						ratingse = (ratingse + obj.StarRating)
+					})
+
+					ratingse = ratingse / userSelf.Ratings.length;
+
+					embed.setDescription(`**Last User Revieiw** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
+					embed.addFields(
+						{ name: "Average Rating:", value: `${ratingse || userFilterReviews.StarRating}/5 ★`, inline: true}
+					)
+				}
 				await interaction.reply({embeds: [embed]})
 			}
 		}
