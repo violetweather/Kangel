@@ -44,6 +44,4 @@ yukong.on(Events.Debug, m => logger.debug(m));
 yukong.on(Events.Warn, m => logger.warn(m));
 yukong.on(Events.Error, m => logger.error(m));
 
-yukong.login(process.env.TOKEN).then(() => {
-	handleLogs(yukong);
-})
+yukong.login(process.env.TOKEN)
