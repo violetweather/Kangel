@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, ChannelType } = require('discord.js');
 const moment = require('moment');
 const User = require('../../Schemas.js/rateSchema')
 
@@ -23,6 +23,7 @@ module.exports = {
 			
 			if(interaction.options.getUser('target')) {
 				let mention = await interaction.options.getUser('target').fetch({force: true})
+				// console.log(await interaction.guild.members.fetch(mention.id).roles.size)
 
 				let embed = new EmbedBuilder();
 				if(mention.bot) {
@@ -54,10 +55,13 @@ module.exports = {
 
 					ratings = ratings / user.Ratings.length;
 
-					embed.setDescription(`**Last User Revieiw** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
-					embed.addFields(
-						{ name: "Average Rating:", value: `${ratings.toFixed(2) || userFilterReviews.StarRating}/5 ★`, inline: true}
-					)
+					if(!isNaN(ratings)) {
+						embed.addFields(
+							{ name: "Average Rating:", value: `${ratings.toFixed(2)}/5.00 ★`, inline: true}
+						)
+					}
+
+					embed.setDescription(`**Last User Review** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
 				}
 
 				embed.setImage(mention.bannerURL({ dynamic: true , size: 2048, format: "png" }))
@@ -95,10 +99,13 @@ module.exports = {
 
 					ratingse = ratingse / userSelf.Ratings.length;
 
-					embed.setDescription(`**Last User Revieiw** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
-					embed.addFields(
-						{ name: "Average Rating:", value: `${ratingse.toFixed(2) || userFilterReviews.StarRating}/5 ★`, inline: true}
-					)
+					if(!isNaN(ratingse)) {
+						embed.addFields(
+							{ name: "Average Rating:", value: `${ratingse.toFixed(2)}/5.00 ★`, inline: true}
+						)
+					}
+
+					embed.setDescription(`**Last User Review** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
 				}
 				await interaction.reply({embeds: [embed]})
 			}
@@ -106,7 +113,8 @@ module.exports = {
 
 		if (interaction.options.getSubcommand() === 'server') {
 
-			// console.log((await interaction.guild.channels.fetch()).map((m) => m))
+			let channelCount = await interaction.guild.channels.cache.filter(channel => channel.type === ChannelType.GuildText).size
+			let vchannelCount = await interaction.guild.channels.cache.filter(channel => channel.type === ChannelType.GuildVoice).size
 
 			let serverEmbed = new EmbedBuilder()
 			.setTitle("Server Information")
@@ -116,8 +124,8 @@ module.exports = {
 				{ name: "Server ID", value: interaction.guild.id, inline: true},
 				{ name: "Members", value: `${interaction.guild.memberCount}`, inline: true},
 				{ name: "Owner", value: `${await interaction.client.users.fetch(interaction.guild.ownerId)}`, inline: true},
-				// { name: "Channels", value: `E${(await interaction.guild.channels.fetch()).filter((m) => m.type === '0').size}`, inline: true},
-				// { name: "Voice Channels", value: `T${(await interaction.guild.memberCount)}`, inline: true}
+				{ name: "Channels", value: `${channelCount}`, inline: true},
+				{ name: "Voice Channels", value: `${vchannelCount || 0}`, inline: true}
 			)
 			.setImage(`https://cdn.discordapp.com/banners/${interaction.guild.id}/${interaction.guild.banner}`)
 			.setThumbnail(`https://cdn.discordapp.com/icons/${interaction.guild.id}/${interaction.guild.icon}`)
