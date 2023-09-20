@@ -12,7 +12,7 @@ module.exports = {
         .addSubcommand(subcommand =>
 			subcommand
 				.setName('user')
-				.setDescription('Info about a user')
+				.setDescription('Review a user')
                 .addUserOption(
                     option => option.setName('target').setDescription('User to give star rating to.').setRequired(true)
                 )
@@ -34,7 +34,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('server')
-                .setDescription('Rate the current server')
+                .setDescription('Review the current server')
                 .addStringOption(option => 
                     option.setName('stars')
                     .setDescription('Rate from 1 to 5 stars your experience with the user!')
