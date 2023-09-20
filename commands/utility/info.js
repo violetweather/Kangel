@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, ChannelType } = require('discord.js');
 const moment = require('moment');
 const User = require('../../Schemas.js/rateSchema')
+const Server = require('../../Schemas.js/guildRateSchema')
 
 module.exports = {
 	category: 'utility',
@@ -24,6 +25,15 @@ module.exports = {
 			if(interaction.options.getUser('target')) {
 				let mention = await interaction.options.getUser('target').fetch({force: true})
 				// console.log(await interaction.guild.members.fetch(mention.id).roles.size)
+
+				function formatBytes(a, b) {
+					let c = 1024
+					d = b || 2 
+					e = ['B', 'KB', 'MB', 'GB', 'TB']
+					f = Math.floor(Math.log(a) / Math.log(c))
+
+					return parseFloat((a / Math.pow(c, f)).toFixed(d)) + '' + e[f]
+				}
 
 				let embed = new EmbedBuilder();
 				if(mention.bot) {
@@ -61,7 +71,15 @@ module.exports = {
 						)
 					}
 
-					embed.setDescription(`**Last User Review** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
+					embed.setDescription(`**Last Review** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
+				}
+
+				if(mention.id === "1140470772108906630") {
+					embed.addFields(
+						{ name: "Ping", value: `${interaction.client.ws.ping}ms`, inline: true},
+						{ name: "Memory Used", value: `${formatBytes(process.memoryUsage().heapUsed)}`, inline: true},
+						{ name: "Node Version", value: `${process.version}`, inline: true},
+					)
 				}
 
 				embed.setImage(mention.bannerURL({ dynamic: true , size: 2048, format: "png" }))
@@ -105,7 +123,7 @@ module.exports = {
 						)
 					}
 
-					embed.setDescription(`**Last User Review** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
+					embed.setDescription(`**Last Review** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
 				}
 				await interaction.reply({embeds: [embed]})
 			}
@@ -129,6 +147,29 @@ module.exports = {
 			)
 			.setImage(`https://cdn.discordapp.com/banners/${interaction.guild.id}/${interaction.guild.banner}`)
 			.setThumbnail(`https://cdn.discordapp.com/icons/${interaction.guild.id}/${interaction.guild.icon}`)
+
+			const server = await Server.findOne({
+				ServerID: interaction.guild.id
+			})
+
+			if(server) {
+				let serverFilterReviews = server.Ratings.pop();
+				let ratings = 0;
+
+				server.Ratings.forEach((obj, index) => {
+					ratings = (ratings + obj.StarRating)
+				})
+
+				ratings = ratings / server.Ratings.length;
+
+				if(!isNaN(ratings)) {
+					serverEmbed.addFields(
+						{ name: "Average Rating:", value: `${ratings.toFixed(2)}/5.00 ★`, inline: true}
+					)
+				}
+
+				serverEmbed.setDescription(`**Last Review** \n **[${serverFilterReviews.StarRating}/5 ★]** "${serverFilterReviews.Comment}" **by ${serverFilterReviews.Author}**`)
+			}
 
 			await interaction.reply({embeds: [serverEmbed]})
 		}

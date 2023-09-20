@@ -42,7 +42,7 @@ module.exports = {
 
         let embed = new EmbedBuilder()
         .setColor('Blue')
-        .setDescription(`**Translating From:** \n ${input} \n **${langMatch[0].language}:** \n ${decodeURIComponent(translateFunction)}`)
+        .setDescription(`**From:** \n ${input} \n **To ${langMatch[0].language}:** \n ${decodeURIComponent(translateFunction)}`)
 
         await interaction.reply({embeds: [embed]})
     }

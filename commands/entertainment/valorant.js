@@ -42,13 +42,17 @@ module.exports = {
         );
 
         if(category === "val_comp") {
+            if(!rankedStats.matchesPlayed) {
+                return interaction.reply({content: "Player has not queued competitive as of this episode.", ephemeral: true})
+            }
+
             embed.setTitle("Competitive Stats")
             embed.addFields(
                 { name: "Matches Played", value: `${rankedStats.matchesPlayed}`, inline: true},
                 { name: "Matches Won", value: `${rankedStats.matchesWon}`, inline: true},
                 { name: "Matches Tied", value: `${rankedStats.matchesTied}`, inline: true},
                 { name: "Win %", value: `${rankedStats.matchesWinPct.toFixed(1)}%`, inline: true},
-                { name: "Competitive Playtime", value: `${moment.utc(rankedStats.timePlayed*1000).format('HH:MM')}`, inline: true},
+                // { name: "Playtime", value: `${moment.utc(rankedStats.timePlayed*1000).format('HH:MM')}`, inline: true},
                 { name: "Damage/Round", value: `${rankedStats.damagePerRound.toFixed(1)}`, inline: true},
                 { name: "Kills", value: `${rankedStats.kills.toLocaleString()}`, inline: true},
                 { name: "Deaths", value: `${rankedStats.deaths.toLocaleString()}`, inline: true},
@@ -63,12 +67,15 @@ module.exports = {
 
         if(category === "val_casual") {
             embed.setTitle("Unrated Stats")
+            if(!casualStats.matchesPlayed) {
+                return interaction.reply({content: "Player has not queued unrated as of this episode.", ephemeral: true})
+            }
             embed.addFields(
                 { name: "Matches Played", value: `${casualStats.matchesPlayed}`, inline: true},
                 { name: "Matches Won", value: `${casualStats.matchesWon}`, inline: true},
                 { name: "Matches Tied", value: `${casualStats.matchesTied}`, inline: true},
                 { name: "Win %", value: `${casualStats.matchesWinPct.toFixed(1)}%`, inline: true},
-                { name: "Competitive Playtime", value: `${moment.utc(casualStats.timePlayed).format('HH[h]:mm[m]')}`, inline: true},
+                // { name: "Playtime", value: `${moment.utc(casualStats.timePlayed).format('HH[h]:mm[m]')}`, inline: true},
                 { name: "Damage/Round", value: `${casualStats.damagePerRound.toFixed(1)}`, inline: true},
                 { name: "Kills", value: `${casualStats.kills.toLocaleString()}`, inline: true},
                 { name: "Deaths", value: `${casualStats.deaths.toLocaleString()}`, inline: true},

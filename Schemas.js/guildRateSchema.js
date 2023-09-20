@@ -8,10 +8,10 @@ let starSchema = new Schema({
     Updated: { type: Date, default: Date.now}
 });
 
-let userRepComments = new Schema({
-    UserID: String,
+let guildRepComments = new Schema({
+    ServerID: String,
     Ratings: [starSchema],
     Updated: { type: Date, default: Date.now}
 });
 
-module.exports = model('userReviews', userRepComments);
+module.exports = model('serverReviews', guildRepComments);
