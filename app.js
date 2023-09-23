@@ -4,9 +4,9 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const logger = require('./logger');
 
-const yukong = new Client({ intents: [Object.keys(GatewayIntentBits)] });
+const kangel = new Client({ intents: [Object.keys(GatewayIntentBits)] });
 
-yukong.commands = new Collection();
+kangel.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 
@@ -17,7 +17,7 @@ for (const folder of commandFolders) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
 		if ('data' in command && 'execute' in command) {
-			yukong.commands.set(command.data.name, command);
+			kangel.commands.set(command.data.name, command);
 		} else {
 			console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
 		}
@@ -31,17 +31,17 @@ for (const file of eventFiles) {
 	const filePath = path.join(eventsPath, file);
 	const event = require(filePath);
 	if (event.once) {
-		yukong.once(event.name, (...args) => event.execute(...args));
+		kangel.once(event.name, (...args) => event.execute(...args));
 	} else {
-		yukong.on(event.name, (...args) => event.execute(...args));
+		kangel.on(event.name, (...args) => event.execute(...args));
 	}
 }
 
-yukong.cooldowns = new Collection();
+kangel.cooldowns = new Collection();
 
-yukong.on(Events.ClientReady, () => logger.info('The bot is online'));
-yukong.on(Events.Debug, m => logger.debug(m));
-yukong.on(Events.Warn, m => logger.warn(m));
-yukong.on(Events.Error, m => logger.error(m));
+kangel.on(Events.ClientReady, () => logger.info('The bot is online'));
+kangel.on(Events.Debug, m => logger.debug(m));
+kangel.on(Events.Warn, m => logger.warn(m));
+kangel.on(Events.Error, m => logger.error(m));
 
-yukong.login(process.env.TOKEN)
+kangel.login(process.env.TOKEN)

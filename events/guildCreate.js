@@ -7,7 +7,7 @@ module.exports = {
         let embed = new EmbedBuilder()
         .setColor("Purple")
         .setTitle(`Thanks for adding ${guild.client.user.username} to ${guild.name}!`)
-        .setDescription("**Yukong** is a *multi-functional* bot! \n - With the ability to moderate your server, entertain users, and provide unique features!")
+        .setDescription("**kangel** is a *multi-functional* bot! \n - With the ability to moderate your server, entertain users, and provide unique features!")
         .addFields(
             { name: "Set up moderation now!", value: "`/setup`"},
             { name: "Try a fun command!", value: "`/translate`"},

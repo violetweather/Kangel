@@ -54,7 +54,7 @@ module.exports = {
         }
 
         if(member.id === interaction.guild.ownerId) {
-            await interaction.reply({content: 'Madam Yukong cannot ban the owner of the server!', ephemeral: true});
+            await interaction.reply({content: 'Kangel cannot ban the owner of the server!', ephemeral: true});
             return;
         }
 
@@ -94,7 +94,7 @@ module.exports = {
         }
 
         if(memberHighestRole >= botHighestRole) {
-            await interaction.reply({content: 'Yukong\'s roles are lower than the target user.', ephemeral: true});
+            await interaction.reply({content: 'kangel\'s roles are lower than the target user.', ephemeral: true});
             return;
         }
 

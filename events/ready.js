@@ -6,8 +6,8 @@ const logger = require('../logger');
 module.exports = {
 	name: Events.ClientReady,
 	once: true,
-	async execute(yukong) {
-		console.log(`${yukong.user.tag} is ready.`);
+	async execute(kangel) {
+		console.log(`${kangel.user.tag} is ready.`);
 
 		if (mongodbURL) {
 			await mongoose.connect(mongodbURL || '', {

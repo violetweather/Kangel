@@ -21,16 +21,30 @@ module.exports = {
                 .setDescription('See server reviews')
                 ).setDMPermission(false),
 	async execute(interaction) {
-        let mention = await interaction.options.getUser('target').fetch({force: true})
+        await interaction.reply({content: "This command is not usable yet", ephemeral: true})
+        // let mention = await interaction.options.getUser('target').fetch({force: true})
 
-        if(interaction.options.getSubcommand() === 'user') {
-            const user = await User.findOne({
-                UserID: mention.id
-            })
+        // if(interaction.options.getSubcommand() === 'user') {
+        //     const user = await User.findOne({
+        //         UserID: mention.id
+        //     })
 
-            if(user) {
-                console.log(user.Ratings.join(", "))
-            }
-        }
+        //     if(user) {
+        //         let embed = new EmbedBuilder();
+
+        //         user.Ratings.forEach((item, index) => {
+        //             let reviews = `${index+1}. **${item.Author}** **[${item.StarRating}/5 ★]** [**Comment**: ${item.Comment}]`;
+        //             embed.setDescription(reviews)
+
+        //             interaction.reply({embeds: [embed]})
+        //         })
+        //     } else {
+        //         let embed = new EmbedBuilder()
+        //         .setDescription("No reviews found for the user.")
+        //         .setColor("Red")
+
+        //         interaction.reply({embeds: [embed]})
+        //     }
+        // }
     }
 }
