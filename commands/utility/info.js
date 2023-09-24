@@ -24,7 +24,6 @@ module.exports = {
 			
 			if(interaction.options.getUser('target')) {
 				let mention = await interaction.options.getUser('target').fetch({force: true})
-				// console.log(await interaction.guild.members.fetch(mention.id).roles.size)
 
 				function formatBytes(a, b) {
 					let c = 1024
@@ -36,24 +35,34 @@ module.exports = {
 				}
 
 				let embed = new EmbedBuilder();
-				if(mention.bot) {
-					embed.setTitle("Bot Information")
-				} else {
-					embed.setTitle("User Information")
-				}
+
 				embed.setColor(mention.hexAccentColor || 'Random')
 				embed.addFields(
-					{ name: "Display Name", value: `${mention.globalName || mention.username}`, inline: true},
-					{ name: "Username", value: `${mention.username}`, inline: true},
-					{ name: "ID", value: mention.id, inline: false},
-					{ name: "Creation Date", value: `${moment.utc(mention.createdAt).format('YYYY-MM-DD')}`, inline: true},
-					{ name: "Join Date", value: `${moment.utc(mention.joinedAt).format('YYYY-MM-DD')}`, inline: true},
-					// { name: "knd Flag", value: "Disabled", inline: true}
+					{ name: `${mention.globalName || mention.username}`,
+						value: [
+							`**Creation Date**: <t:${parseInt(mention.createdAt/1000)}:R>`,
+							`**Username**: ${mention.username}`,
+							`**ID**: ${mention.id}`,
+						].join("\n"),
+					},
 				)
 
 				const user = await User.findOne({
 					UserID: mention.id
 				})
+
+				if(mention.id === "1140470772108906630") {
+					embed.addFields(
+						{ name: `<:heart:1155448985956397078> My stats`,
+							value: [
+								`**Ping**: ${interaction.client.ws.ping}ms`,
+								`**Memory Used**: ${formatBytes(process.memoryUsage().heapUsed)}`,
+								`**Node Version**: ${process.version}`,
+							].join("\n"),
+							inline: true
+						},
+					)
+				}
 
 				if(user) {
 					let userFilterReviews = user.Ratings.pop();
@@ -65,21 +74,22 @@ module.exports = {
 
 					ratings = ratings / user.Ratings.length;
 
+					embed.addFields(
+						{ name: `✒️ Latest Review`,
+							value: [
+							`**Star Rating**: ${userFilterReviews.StarRating}/5 ★`,
+							`**Review Comment**: ${userFilterReviews.Comment}`,
+							`**Review Author**: ${userFilterReviews.Author}`,
+						].join("\n"),
+						inline: true
+						}
+					)
+
 					if(!isNaN(ratings)) {
 						embed.addFields(
-							{ name: "Average Rating:", value: `${ratings.toFixed(2)}/5.00 ★`, inline: true}
+							{ name: "⭐ Average Rating:", value: `${ratings.toFixed(2)}/5.00 ★`, inline: true}
 						)
 					}
-
-					embed.setDescription(`**Last Review** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
-				}
-
-				if(mention.id === "1140470772108906630") {
-					embed.addFields(
-						{ name: "Ping", value: `${interaction.client.ws.ping}ms`, inline: true},
-						{ name: "Memory Used", value: `${formatBytes(process.memoryUsage().heapUsed)}`, inline: true},
-						{ name: "Node Version", value: `${process.version}`, inline: true},
-					)
 				}
 
 				embed.setImage(mention.bannerURL({ dynamic: true , size: 2048, format: "png" }))
@@ -91,14 +101,16 @@ module.exports = {
 
 				let embed = new EmbedBuilder()
 				.setColor(user.hexAccentColor || 'Random')
-				.setTitle("User Information")
-				.addFields(
-					{ name: "Display Name", value: `${user.globalName || user.username}`, inline: true},
-					{ name: "Username", value: `${user.username}`, inline: true},
-					{ name: "ID", value: user.id, inline: false},
-					{ name: "Creation Date", value: `${moment.utc(user.createdAt).format('YYYY-MM-DD')}`, inline: true},
-					{ name: "Join Date", value: `${moment.utc(user.joinedAt).format('YYYY-MM-DD')}`, inline: true}
+				embed.addFields(
+					{ name: `${user.globalName || user.username}`,
+						value: [
+							`**Creation Date**: <t:${parseInt(user.createdAt/1000)}:R>`,
+							`**Username**: ${user.username}`,
+							`**ID**: ${user.id}`,
+						].join("\n"),
+					},
 				)
+
 				.setImage(user.bannerURL({ dynamic: true , size: 2048, format: "png" }))
 			    .setThumbnail(user.displayAvatarURL());
 
@@ -117,13 +129,22 @@ module.exports = {
 
 					ratingse = ratingse / userSelf.Ratings.length;
 
+					embed.addFields(
+						{ name: `✒️ Latest Review`,
+							value: [
+							`**Star Rating**: ${userFilterReviews.StarRating}/5 ★`,
+							`**Review Comment**: ${userFilterReviews.Comment}`,
+							`**Review Author**: ${userFilterReviews.Author}`,
+						].join("\n"),
+						inline: true
+						}
+					)
+
 					if(!isNaN(ratingse)) {
 						embed.addFields(
-							{ name: "Average Rating:", value: `${ratingse.toFixed(2)}/5.00 ★`, inline: true}
+							{ name: "⭐ Average Rating:", value: `${ratingse.toFixed(2)}/5.00 ★`, inline: true}
 						)
 					}
-
-					embed.setDescription(`**Last Review** \n **[${userFilterReviews.StarRating}/5 ★]** "${userFilterReviews.Comment}" **by ${userFilterReviews.Author}**`)
 				}
 				await interaction.reply({embeds: [embed]})
 			}
@@ -131,22 +152,46 @@ module.exports = {
 
 		if (interaction.options.getSubcommand() === 'server') {
 
-			let channelCount = await interaction.guild.channels.cache.filter(channel => channel.type === ChannelType.GuildText).size
+			let channelCount = await interaction.guild.channels.cache.filter(channel => channel.type === ChannelType.GuildText, ChannelType.GuildForum, ChannelType.GuildNews).size
 			let vchannelCount = await interaction.guild.channels.cache.filter(channel => channel.type === ChannelType.GuildVoice).size
 
 			let serverEmbed = new EmbedBuilder()
-			.setTitle("Server Information")
 			.setColor("Random")
 			.addFields(
-				{ name: "Server Name", value: interaction.guild.name, inline: true},
-				{ name: "Server ID", value: interaction.guild.id, inline: true},
-				{ name: "Members", value: `${interaction.guild.memberCount}`, inline: true},
-				{ name: "Owner", value: `${await interaction.client.users.fetch(interaction.guild.ownerId)}`, inline: true},
-				{ name: "Channels", value: `${channelCount}`, inline: true},
-				{ name: "Voice Channels", value: `${vchannelCount || 0}`, inline: true}
+				{ name: `${interaction.guild.name}`,
+					value: [
+						`**Created**: <t:${parseInt(interaction.guild.createdAt/1000)}:R>`,
+						`**ID**: ${interaction.guild.id}`,
+						`**Owner**: ${await interaction.client.users.fetch(interaction.guild.ownerId)}`
+					].join("\n"),
+				},
+				{ name: `⚙️ General`,
+				value: [
+					`**Users**: ${interaction.guild.memberCount}`,
+					`**Channels**: ${channelCount}`,
+					`**Voice Channels:**: ${vchannelCount || 0}`,
+				].join("\n"),
+				inline: true
+				},
+				{ name: `🎉 Emotes`,
+					value: [
+						`**Standard Emotes**: ${interaction.guild.emojis.cache.filter(emote => !emote.animated).size}`,
+						`**Animated Emotes**: ${interaction.guild.emojis.cache.filter(emote => emote.animated).size}`,
+						`**Stickers**: ${interaction.guild.stickers.cache.size}`,
+					].join("\n"),
+					inline: true
+				},
+				{ name: `📈 Nitro`,
+				value: [
+					`**Nitro Boosters**: ${interaction.guild.members.cache.filter(member => member.roles.premiumSubscriberRole).size}`,
+					`**Nitro Boosts**: ${interaction.guild.premiumSubscriptionCount}`,
+					`**Nitro Level**: ${interaction.guild.premiumTier || "0"}`,
+				].join("\n"),
+				inline: true
+			},
 			)
-			.setImage(`https://cdn.discordapp.com/banners/${interaction.guild.id}/${interaction.guild.banner}`)
-			.setThumbnail(`https://cdn.discordapp.com/icons/${interaction.guild.id}/${interaction.guild.icon}`)
+			.setImage(interaction.guild.bannerURL({size: 1024}))
+			.setThumbnail(interaction.guild.iconURL({size: 1024}))
 
 			const server = await Server.findOne({
 				ServerID: interaction.guild.id
@@ -162,13 +207,22 @@ module.exports = {
 
 				ratings = ratings / server.Ratings.length;
 
+				serverEmbed.addFields(
+					{ name: `✒️ Latest Review`,
+						value: [
+						`**Star Rating**: ${serverFilterReviews.StarRating}/5 ★`,
+						`**Review Comment**: ${serverFilterReviews.Comment}`,
+						`**Review Author**: ${serverFilterReviews.Author}`,
+					].join("\n"),
+					inline: true
+					}
+				)
+
 				if(!isNaN(ratings)) {
 					serverEmbed.addFields(
-						{ name: "Average Rating:", value: `${ratings.toFixed(2)}/5.00 ★`, inline: true}
+						{ name: "⭐ Average Rating:", value: `${ratings.toFixed(2)}/5.00 ★`, inline: true}
 					)
 				}
-
-				serverEmbed.setDescription(`**Last Review** \n **[${serverFilterReviews.StarRating}/5 ★]** "${serverFilterReviews.Comment}" **by ${serverFilterReviews.Author}**`)
 			}
 
 			await interaction.reply({embeds: [serverEmbed]})
