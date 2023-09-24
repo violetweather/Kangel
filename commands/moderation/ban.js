@@ -21,13 +21,13 @@ module.exports = {
                 option.setName('reason')
                 .setDescription('Reason for banning the user.'))
         .addBooleanOption(option => 
-                option.setName('yi2e')
+                option.setName('knd')
                 .setDescription('Global ban system synced to you (or an authoritative).')),
 	async execute(interaction) {
         const member = interaction.options.getMember('target');
         const user = interaction.options.getUser('target');
         const reason = interaction.options.getString('reason') || 'No reason included.';
-        const yi2eOption = interaction.options.getString('yi2e');
+        const kndOption = interaction.options.getString('knd');
         const banClearDays = interaction.options.getString('delete_messages');
         const bannedList = await interaction.guild.bans.fetch();
 

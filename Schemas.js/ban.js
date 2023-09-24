@@ -1,9 +1,9 @@
 const { model, Schema } = require('mongoose');
 
 let banSchema = new Schema({
-    isYI2E: Boolean,
+    isknd: Boolean,
     isExempt: Boolean,
-    YI2EOption: Boolean,
+    kndOption: Boolean,
     CaseID: Number,
     GuildID: Number,
     UserID: Number,

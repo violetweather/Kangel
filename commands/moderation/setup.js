@@ -6,7 +6,7 @@ module.exports = {
 	category: 'setup',
 	data: new SlashCommandBuilder()
 		.setName('setup')
-		.setDescription('Configure your server with moderation features and YI2E')
+		.setDescription('Configure your server with moderation features and knd')
         .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
 	    .setDMPermission(false)
         .addChannelOption(option => 
@@ -14,11 +14,11 @@ module.exports = {
             .setDescription('Select a logs channel for general moderation logs')
             .setRequired(true))
         .addBooleanOption(option => 
-            option.setName('yi2e')
+            option.setName('knd')
             .setDescription('Global ban system synced to you (or an authoritative).'))
         .addBooleanOption(option => 
-            option.setName('yi2e_auto')
-            .setDescription('Make bans automatically be sent to YI2E or make YI2E optional.')),
+            option.setName('knd_auto')
+            .setDescription('Make bans automatically be sent to knd or make knd optional.')),
 	async execute(interaction) {
         const logChannel = interaction.options.getChannel("logs")
         const embed = new EmbedBuilder()

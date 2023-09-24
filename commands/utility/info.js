@@ -48,7 +48,7 @@ module.exports = {
 					{ name: "ID", value: mention.id, inline: false},
 					{ name: "Creation Date", value: `${moment.utc(mention.createdAt).format('YYYY-MM-DD')}`, inline: true},
 					{ name: "Join Date", value: `${moment.utc(mention.joinedAt).format('YYYY-MM-DD')}`, inline: true},
-					// { name: "YI2E Flag", value: "Disabled", inline: true}
+					// { name: "knd Flag", value: "Disabled", inline: true}
 				)
 
 				const user = await User.findOne({

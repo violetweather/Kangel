@@ -4,8 +4,8 @@ let guildSetupSchema = new Schema({
     GuildID: Number,
     Authoritatives: Array,
     LogChannelID: Number,
-    YI2E: Boolean,
-    YI2EOption: String,
+    knd: Boolean,
+    kndOption: String,
     Token: String,
 });
 
