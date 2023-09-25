@@ -19,6 +19,16 @@ module.exports = {
         if(minecraftUser) {
             let minecraftUserApi = `https://playerdb.co/api/player/minecraft/${minecraftUser}`
             let mcUserRes = await axios.get(minecraftUserApi)
+                .catch(function (error) {
+                    if (error.response) {
+                        return interaction.reply({content: `${error.response.data.message}`, ephemeral: true});
+                    } else if (error.request) {
+                        return interaction.reply({content: "An error occurred when running the command", ephemeral: true});
+                    } else {
+                        return interaction.reply({content: "An error occurred when running the command", ephemeral: true});
+                    }
+                }
+            )
     
             let player = mcUserRes.data.data.player
     
@@ -36,7 +46,20 @@ module.exports = {
         if(minecraftServer) {
             let minecraftServerApi = `https://api.mcsrvstat.us/3/${minecraftServer}`
             let mcServerRes = await axios.get(minecraftServerApi)
+                .catch(function (error) {
+                    if (error.response) {
+                        return interaction.reply({content: "An error occurred when running the command", ephemeral: true});
+                    } else if (error.request) {
+                        console.log(error)
+                        return interaction.reply({content: "An error occurred when running the command", ephemeral: true});
+                    } else {
+                        return interaction.reply({content: "An error occurred when running the command", ephemeral: true});
+                    }
+                }
+            )
+
             let minecraftServerIconApi = `https://api.mcsrvstat.us/icon/${minecraftServer}`
+            console.log(minecraftServerIconApi)
 
             let server = mcServerRes.data
 

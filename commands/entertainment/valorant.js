@@ -27,7 +27,13 @@ module.exports = {
         const category = interaction.options.getString('category');
         const riotUser = interaction.options.getString('user', true);
         const riotTag = interaction.options.getString('tag', true);
-        const riot = await API.fetchUser(riotUser, riotTag)
+        const riot = await API.fetchUser(riotUser, riotTag)            
+            .catch(function (error) {
+                if (error) {
+                    return interaction.reply({content: `${error}`, ephemeral: true})
+                }
+            }
+        )
         
         let playerInfo = riot.info()
         let rankedStats = riot.ranked()

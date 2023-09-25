@@ -25,6 +25,16 @@ module.exports = {
 
         let currencyURL = `https://exchange-rates.abstractapi.com/v1/convert?api_key=dc36b21bfb134631a5df3575ebd3f559&base=${currencyFrom}&target=${currencyTo}&base_amount=${currencyAmount}`
         let currencyAPIRes = await axios.get(currencyURL)
+            .catch(function (error) {
+                if (error.response) {
+                    return interaction.reply({content: `${error.response.data['error'].message}`, ephemeral: true});
+                  } else if (error.request) {
+                    return interaction.reply({content: "An error occurred when running the command", ephemeral: true});
+                  } else {
+                    return interaction.reply({content: "An error occurred when running the command", ephemeral: true});
+                  }
+            }
+        )
         let currency = currencyAPIRes.data
 
         let embed = new EmbedBuilder()

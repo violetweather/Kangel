@@ -8,14 +8,16 @@ module.exports = {
 		.setDescription('Purge messages from chat or a specific member.')
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages)
         .setDMPermission(false)
-        .addIntegerOption(option => option.setName('amount').setDescription('Amount of messages to purge').setRequired(true))
+        .addStringOption(option => option.setName('amount').setDescription('Amount of messages to purge').setRequired(true))
         .addUserOption(option => option.setName('target').setDescription('The user to purge messages from')),
 	async execute(interaction) {
         const member = interaction.options.getMember('target');
-        const amount = interaction.options.getInteger('amount')
+        const amount = interaction.options.getString('amount')
 
         const messages = await interaction.channel.messages.fetch({
             limit: amount+1,
+        }).catch((error) => {
+            return interaction.reply({content: `Could not fetch messages from the channel/user.`, ephemeral: true});
         })
 
         const purgeEmbed = new EmbedBuilder()
@@ -30,7 +32,7 @@ module.exports = {
                     filtered.push(msg);
                     i++;
                 }
-            });
+            })
 
             await interaction.channel.bulkDelete(filtered).then(messages => {
                 purgeEmbed.setDescription(`Purged ${messages.size} messages from ${member}.`);

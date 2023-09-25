@@ -42,7 +42,15 @@ module.exports = {
 
         let embed = new EmbedBuilder()
         .setColor('Blue')
-        .setDescription(`**From:** \n ${input} \n **To ${langMatch[0].language}:** \n ${decodeURIComponent(translateFunction)}`)
+        .addFields(
+            { name: `🌐 Translate command prompt`,
+                value: [
+                    `**From**: ${input}`,
+                    `**Detected Language**: *${langMatch[0].language}*`,
+                    `**To**: ${decodeURIComponent(translateFunction)}`,
+                ].join("\n"),
+            },
+        )
 
         await interaction.reply({embeds: [embed]})
     }
