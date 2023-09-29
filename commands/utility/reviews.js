@@ -32,12 +32,18 @@ module.exports = {
         //     if(user) {
         //         let embed = new EmbedBuilder();
 
-        //         user.Ratings.forEach((item, index) => {
-        //             let reviews = `${index+1}. **${item.Author}** **[${item.StarRating}/5 ★]** [**Comment**: ${item.Comment}]`;
-        //             embed.setDescription(reviews)
+        //         async function reviews() { 
+        //             user.Ratings.forEach((item, index) => {
+        //                 const [reviews] = `${index+1}. **${item.Author}** **[${item.StarRating}/5 ★]** [**Comment**: ${item.Comment}]`;
+        //                 return reviews;
+        //             })
+        //         }
 
-        //             interaction.reply({embeds: [embed]})
-        //         })
+        //         console.log(reviews())
+
+        //         embed.setDescription(reviews())
+        //         interaction.reply({embeds: [embed]})
+
         //     } else {
         //         let embed = new EmbedBuilder()
         //         .setDescription("No reviews found for the user.")
