@@ -38,6 +38,29 @@ for (const file of eventFiles) {
 }
 
 kangel.cooldowns = new Collection();
+const Reminders = require("./Schemas.js/reminderSchema");
+const remind = require('./commands/utility/remind');
+setInterval(async () => {
+	const reminds = await Reminders.find();
+	if(!reminds) return;
+	else {
+		reminds.forEach( async reminder => {
+			if(reminder.Time > Date.now()) return;
+
+			let user = await kangel.users.fetch(reminder.User);
+
+			user?.send({
+				content: `WAKE UP! Kangel is reminding you about ${reminder.Remind}`
+			}).catch(err => {return;});
+
+			await Reminders.deleteMany({
+				Time: reminder.Time,
+				User: user.id,
+				Remind: reminder.Remind
+			});
+		})
+	}
+}, 1000 * 5);
 
 kangel.on(Events.ClientReady, () => logger.info('The bot is online'));
 kangel.on(Events.Debug, m => logger.debug(m));

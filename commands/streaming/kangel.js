@@ -5,17 +5,17 @@ const accountSchema = require("../../Schemas.js/account")
 module.exports = {
 	category: 'streaming',
 	data: new SlashCommandBuilder()
-		.setName('account')
-		.setDescription('Check Kangel\'s stream account!')
+		.setName('kangel')
+		.setDescription('Start your journey to make Kangel an INTERNET ANGEL')
         .setDMPermission(false)
         .addStringOption(option => 
                 option.setName('options')
                 .setDescription('Select an option for Kangel\'s stream account')
                 .addChoices(
-                    {name: 'create', value: 'acc_create'},
+                    {name: 'start', value: 'acc_create'},
                     {name: 'info', value: 'acc_info'},
                     {name: "delete", value: 'acc_del'}
-                )),
+                ).setRequired(true)),
 	async execute(interaction) {
         const { options, user, guild } = interaction;
 
