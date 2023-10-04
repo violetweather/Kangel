@@ -50,7 +50,7 @@ setInterval(async () => {
 			let user = await kangel.users.fetch(reminder.User);
 
 			user?.send({
-				content: `WAKE UP! Kangel is reminding you about ${reminder.Remind}`
+				content: `WAKE UP! Kangel is reminding you about **${reminder.Remind}**`
 			}).catch(err => {return;});
 
 			await Reminders.deleteMany({

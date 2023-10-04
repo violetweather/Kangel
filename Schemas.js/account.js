@@ -6,7 +6,12 @@ let accountSchema = new Schema({
     Followers: Number,
     Bank: Number,
     LastDaily: {type: Number, default: 0},
-    Wallet: Number
+    Wallet: Number,
+    StressStat: Number,
+    AffectionStat: Number,
+    MentalDarknessStat: Number,
+    DailyActivityCount: Number,
+    LastActivity: {type: Number, default: 0}
 });
 
 module.exports = model('Account', accountSchema);

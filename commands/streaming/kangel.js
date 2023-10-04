@@ -14,7 +14,8 @@ module.exports = {
                 .addChoices(
                     {name: 'start', value: 'acc_create'},
                     {name: 'info', value: 'acc_info'},
-                    {name: "delete", value: 'acc_del'}
+                    {name: "end", value: 'acc_del'},
+                    {name: "stats", value: 'acc_stats'}
                 ).setRequired(true)),
 	async execute(interaction) {
         const { options, user, guild } = interaction;
@@ -30,7 +31,11 @@ module.exports = {
                     User: user.id,
                     Followers: 1,
                     Wallet: 100,
-                    Bank: 0
+                    Bank: 0,
+                    StressStat: 10,
+                    AffectionStat: 10,
+                    MentalDarknessStat: 10,
+                    DailyActivityCount: 3,
                 })
 
                 await data.save()
@@ -62,7 +67,8 @@ module.exports = {
 						value: [
 							`**Kangel's Followers**: ${data.Followers}`,
 							`**Angel Coins (¢)**: ${data.Wallet}`,
-                            `**Your Bank**: ${data.Bank}`
+                            `**Your Bank**: ${data.Bank}`,
+                            `**Remaining Daily Actions**: ${data.DailyActivityCount}`,
 						].join("\n"),
 					},
 				)
@@ -78,6 +84,23 @@ module.exports = {
                 await interaction.reply({ content: "Kangel's streamer account has been deleted."})
             }
             break;
+            case "acc_stats": {
+                if(!data) return interaction.reply({content: "You haven't created Kangel a streamer account..", ephemeral: true})
+                
+                let embed = new EmbedBuilder()
+                .setColor("LuminousVividPink")
+                .addFields(
+					{ name: `<:heart:1155448985956397078> My live stats`,
+						value: [
+							`**😞 Stress**: ${data.StressStat.toFixed(2)}`,
+							`**💗 Affection**: ${data.AffectionStat.toFixed(2)}`,
+                            `**😵‍💫 Mental Darkness**: ${data.MentalDarknessStat.toFixed(2)}`
+						].join("\n"),
+					},
+				)
+
+                await interaction.reply({embeds: [embed]})
+            }
         }
     }
 }

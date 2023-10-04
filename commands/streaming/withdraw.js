@@ -32,6 +32,7 @@ module.exports = {
 
             if(isNaN(converted) === true) return interaction.reply({content: "The amount inputted isn't a number, silly", ephemeral: true})
             if(data.Bank < parseInt(converted) || converted === Infinity) return interaction.reply({content: "You don't have money in your bank, should probably put some in it!", ephemeral: true})
+            if(value < 0) return interaction.reply({content: "The amount inputted isn't a number, silly", ephemeral: true})
 
             data.Wallet += parseInt(converted)
             data.Bank -= parseInt(converted)
