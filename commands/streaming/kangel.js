@@ -49,7 +49,7 @@ module.exports = {
 						value: [
 							`*You're her only follower right now.*`,
 							`**You'll give her 100 coins to get through the beginning**`,
-                            `**You have 3 actions per day!**`
+                            `**You have 3 actions per day!**`,
                             `->>> You are in control of Kangel, every choice you make will impact Kangel.`
 						].join("\n"),
 					},
