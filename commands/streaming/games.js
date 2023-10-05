@@ -187,6 +187,10 @@ module.exports = {
 			}
 			break;
 			case "wordle": {
+				if(converted > 50) {
+					return interaction.reply({content: "You can only gamble up to 30 coins on this game!", ephemeral: true})
+				}
+
 				const Game = new Wordle({
 					message: interaction,
 					isSlashGame: true,
@@ -204,11 +208,11 @@ module.exports = {
 				Game.startGame();
 				Game.on('gameOver', result => {
 					if(result.result === "lose") {
-						return gambleLoss()
+						return gambleLoss();
 					}
 
 					if(result.result === "win") {
-						return gambleWin()
+						return gambleWin();
 					}
 				});
 			}

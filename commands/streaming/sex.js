@@ -4,6 +4,7 @@ const parseMs = require("parse-ms-2")
 const { stressMin, stressMax } = require("../../utilities/stressStat.json")
 const { affectionMin, affectionMax } = require("../../utilities/affectionStat.json")
 const { mentalMin, mentalMax } = require("../../utilities/mentalStat.json")
+const checkDailies = require("../../utilities/checkDailies")
 
 module.exports = {
 	category: 'streaming',
@@ -18,41 +19,10 @@ module.exports = {
         const randomAffection = Math.floor(Math.random() * (affectionMax - affectionMin + 1) + affectionMin);
 
         if(data) {
-            let activityCooldown = 86400000;
-            let activityTimeLeft = activityCooldown - (Date.now() - data.LastActivity);
-
-            if(data.DailyActivityCount === 0) {
-                if(activityTimeLeft === 0) {     
-                    try {
-                        await accountSchema.findOneAndUpdate(
-                            {Guild: interaction.guild.id, User: interaction.user.id},
-                            {
-                                $inc: {
-                                    DailyActivityCount: +3,
-                                }
-                            }
-                        )
-                    } catch(err) {
-                        console.log(err);
-                    }
-                } else {
-                    return interaction.reply({content: `You've exhausted your daily activities with Kangel!`, ephemeral: true})
-                }
-            }
-
-            if(data.DailyActivityCount === 1) {
-                try {
-                    await accountSchema.findOneAndUpdate(
-                        {Guild: interaction.guild.id, User: interaction.user.id},
-                        {
-                            $set: {
-                                LastActivity: Date.now(),
-                            }
-                        }
-                    )
-                } catch(err) {
-                    console.log(err);
-                }
+            if(data.DailyActivityCount > 0) {
+                checkDailies(interaction, interaction.guild.id, interaction.user.id)
+            } else if (data.DailyActivityCount === 0) {
+                return checkDailies(interaction, interaction.guild.id, interaction.user.id)
             }
 
             let embed = new EmbedBuilder()

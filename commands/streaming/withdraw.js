@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, PermissionFlagsBits } = require('discord.js');
 const accountSchema = require("../../Schemas.js/account");
+const { relativeTimeRounding } = require('moment/moment');
 
 module.exports = {
 	category: 'streaming',
@@ -23,16 +24,15 @@ module.exports = {
 
             data.Wallet += data.Bank
             data.Bank = 0
-
             await data.save()
 
-            return interaction.reply({content: "You've given all your money to Kangel.. **be careful**"})
+            return interaction.reply({content: "You've given all your money to Kangel! **careful**", ephemeral: true})
         } else {
             const converted = Number(value)
 
             if(isNaN(converted) === true) return interaction.reply({content: "The amount inputted isn't a number, silly", ephemeral: true})
             if(data.Bank < parseInt(converted) || converted === Infinity) return interaction.reply({content: "You don't have money in your bank, should probably put some in it!", ephemeral: true})
-            if(value < 0) return interaction.reply({content: "The amount inputted isn't a number, silly", ephemeral: true})
+            if(value < 0) return interaction.reply({content: "The amount inputted is invalid..", ephemeral: true})
 
             data.Wallet += parseInt(converted)
             data.Bank -= parseInt(converted)
@@ -42,7 +42,7 @@ module.exports = {
 
             const embed = new EmbedBuilder()
             .setColor("Yellow")
-            .setDescription(`${parseInt(converted)}¢ was withdrawn from your bank, don't forget about Kangel's bills..`)
+            .setDescription(`¢${parseInt(converted)} was withdrawn from your bank, don't forget about Kangel's bills..`)
 
             return interaction.reply({embeds: [embed]})
         }

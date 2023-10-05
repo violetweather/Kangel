@@ -6,6 +6,7 @@ const { stressMin, stressMax } = require("../../utilities/stressStat.json")
 const { affectionMin, affectionMax } = require("../../utilities/affectionStat.json")
 const { mentalMin, mentalMax } = require("../../utilities/mentalStat.json")
 const streamComments = require("../../utilities/streamComments.json")
+const checkDailies = require("../../utilities/checkDailies")
 
 module.exports = {
 	category: 'streaming',
@@ -31,48 +32,18 @@ module.exports = {
         if(data) {
             const cooldown = 86400000;
             const timeLeft = cooldown - (Date.now() - data.LastDaily);
-            let activityCooldown = 86400000;
-            let activityTimeLeft = activityCooldown - (Date.now() - data.LastActivity);
     
             if(timeLeft > 0) {
                 const { hours, minutes, seconds } = parseMs(timeLeft);
                 return interaction.reply({content: `Streaming is tiring.. come back in ${hours} hours ${minutes} minutes ${seconds} seconds`, ephemeral: true});
             }
 
-            if(data.DailyActivityCount === 0) {
-                if(activityTimeLeft === 0) {     
-                    try {
-                        await accountSchema.findOneAndUpdate(
-                            {Guild: interaction.guild.id, User: interaction.user.id},
-                            {
-                                $inc: {
-                                    DailyActivityCount: +3,
-                                }
-                            }
-                        )
-                    } catch(err) {
-                        console.log(err);
-                    }
-                } else {
-                    return interaction.reply({content: `You've exhausted your daily activities with Kangel!`, ephemeral: true})
-                }
+            if(data.DailyActivityCount > 0) {
+                checkDailies(interaction, interaction.guild.id, interaction.user.id)
+            } else if (data.DailyActivityCount === 0) {
+                return checkDailies(interaction, interaction.guild.id, interaction.user.id)
             }
-
-            if(data.DailyActivityCount === 1) {
-                try {
-                    await accountSchema.findOneAndUpdate(
-                        {Guild: interaction.guild.id, User: interaction.user.id},
-                        {
-                            $set: {
-                                LastActivity: Date.now(),
-                            }
-                        }
-                    )
-                } catch(err) {
-                    console.log(err);
-                }
-            }
-    
+            
             const randomFollower = Math.floor(Math.random() * (dailyMax - dailyMin + 1) + dailyMin);
             let randomAmount = randomFollower*4
 
