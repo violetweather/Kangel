@@ -187,7 +187,7 @@ module.exports = {
 			}
 			break;
 			case "wordle": {
-				if(converted > 50) {
+				if(converted > 30) {
 					return interaction.reply({content: "You can only gamble up to 30 coins on this game!", ephemeral: true})
 				}
 

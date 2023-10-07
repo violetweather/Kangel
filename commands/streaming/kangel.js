@@ -1,6 +1,7 @@
 
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, PermissionFlagsBits } = require('discord.js');
 const accountSchema = require("../../Schemas.js/account")
+const claimDailies = require("../../utilities/claimDailies")
 
 module.exports = {
 	category: 'streaming',
@@ -15,7 +16,8 @@ module.exports = {
                     {name: 'start', value: 'acc_create'},
                     {name: 'info', value: 'acc_info'},
                     {name: "end", value: 'acc_del'},
-                    {name: "stats", value: 'acc_stats'}
+                    {name: "stats", value: 'acc_stats'},
+                    {name: "claim", value: "acc_claim"}
                 ).setRequired(true)),
 	async execute(interaction) {
         const { options, user, guild } = interaction;
@@ -101,6 +103,16 @@ module.exports = {
 				)
 
                 await interaction.reply({embeds: [embed]})
+            }
+            break;
+            case "acc_claim": {
+                if(!data) return interaction.reply({content: "You haven't created Kangel a streamer account..", ephemeral: true})
+
+                if(data.DailyActivityCount > 0) {
+                    return claimDailies(interaction, interaction.guild.id, interaction.user.id);
+                } else if (data.DailyActivityCount === 0) {
+                    return claimDailies(interaction, interaction.guild.id, interaction.user.id);
+                }
             }
         }
     }
