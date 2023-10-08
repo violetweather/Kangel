@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "postinstall": "npx patch-package discord-gamecord",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
     "dev": "node . | pino-pretty -i pid,hostname -t 'yyyy-mm-dd HH:MM:ss'",
@@ -16,6 +17,7 @@
     "@google-cloud/translate": "^8.0.1",
     "axios": "^1.5.0",
     "canvas": "^2.11.2",
+    "check-if-word": "^1.2.1",
     "discord-gamecord": "^4.4.1",
     "discord.js": "^14.12.1",
     "dotenv": "^16.3.1",

@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, PermissionFlagsBits } = require('discord.js');
 const { Slots, Wordle, Minesweeper, FastType } = require('discord-gamecord');
 const accountSchema = require("../../Schemas.js/account")
-const typingSentencesFile = require("../../utilities/typingSentences.json")
+const sentences = require("../../utilities/typingSentences.json")
 
 module.exports = {
 	category: 'streaming',
@@ -22,7 +22,7 @@ module.exports = {
 				.setDescription('Play wordle with Kangel!')
 				.addStringOption(option => 
 					option.setName('gamble')
-					.setDescription('Enter your gamble amount').setRequired(true)))
+					.setDescription('Enter your gamble amount, you can only gamble up to 500 coins!').setRequired(true)))
 		.addSubcommand(subcommand =>
 			subcommand
 				.setName('minesweeper')
@@ -34,13 +34,19 @@ module.exports = {
 			subcommand
 				.setName('typing')
 				.setDescription('Make angel spam her keyboard to win')
+				.addStringOption(option =>
+                    option.setName('difficulty')
+                        .setDescription('Easy: 15s, 50 coins! Medium: 10s, 100 coins! Hard: 5s, 500 coins!')
+                        .setRequired(true)
+                        .addChoices(
+                            {name: 'Hard', value: 'hard'},
+                            {name: 'Medium', value: 'medium'},
+							{name: "Easy", value: "easy"}
+                        ))
 				.addStringOption(option => 
 						option.setName('gamble')
 						.setDescription('Enter your gamble amount').setRequired(true))),
 	async execute(interaction) {
-		const valuesTyping = Object.values(typingSentencesFile)
-        const typingSentences = valuesTyping[parseInt(Math.random() * valuesTyping.length)]
-
 		const { options, user, guild } = interaction;
 		let data = await accountSchema.findOne({Guild: interaction.guild.id, User: user.id}).catch(err => {})
 		const value = options.getString("gamble")
@@ -187,8 +193,8 @@ module.exports = {
 			}
 			break;
 			case "wordle": {
-				if(converted > 30) {
-					return interaction.reply({content: "You can only gamble up to 30 coins on this game!", ephemeral: true})
+				if(converted > 500) {
+					return interaction.reply({content: "You can only gamble up to 500 coins on this game!", ephemeral: true})
 				}
 
 				const Game = new Wordle({
@@ -247,30 +253,101 @@ module.exports = {
 			}
 			break;
 			case "typing": {
-				const Game = new FastType({
-					message: interaction,
-					isSlashGame: true,
-					embed: {
-					  title: 'Fast Type',
-					  color: '#F3CFC6',
-					  description: 'You have **{time}** seconds to type the sentence below.'
-					},
-					timeoutTime: 5000,
-					sentence: typingSentences,
-					winMessage: `Kangel won **¢${converted}**! Kangel finished the type race in **{time}** seconds with wpm of **{wpm}**.`,
-					loseMessage: `Kangel lost **¢${converted}**! Kangel didn\'t type the correct sentence in time.`,
-				});
-				  
-				Game.startGame();
-				Game.on('gameOver', result => {
-					if(result.result === "lose") {
-						return gambleLoss()
+				let diff = interaction.options.getString("difficulty")
+				let difficultySetting = sentences[`${diff}`][Math.floor(Math.random() * sentences[`${diff}`].length)];
+
+				if(diff === "hard") {
+					if(converted > 500) {
+						return interaction.reply({content: "The betting max is 500 coins for the hard difficulty!", ephemeral: true})
 					}
 
-					if(result.result === "win") {
-						return gambleWin()
+					const Game = new FastType({
+						message: interaction,
+						isSlashGame: true,
+						embed: {
+						  title: 'Fast Type',
+						  color: '#F3CFC6',
+						  description: 'You have **{time}** seconds to type the sentence below.'
+						},
+						timeoutTime: 5000,
+						sentence: difficultySetting,
+						winMessage: `Kangel won **¢${converted}**! Kangel finished the type race in **{time}** seconds with wpm of **{wpm}**.`,
+						loseMessage: `Kangel lost **¢${converted}**! Kangel didn\'t type the correct sentence in time.`,
+					});
+					  
+					Game.startGame();
+					Game.on('gameOver', result => {
+						if(result.result === "lose") {
+							return gambleLoss()
+						}
+	
+						if(result.result === "win") {
+							return gambleWin()
+						}
+					});
+				}
+
+				if(diff === "medium") {
+					if(converted > 100) {
+						return interaction.reply({content: "The betting max is 100 coins for the medium difficulty!", ephemeral: true})
 					}
-				});
+
+					const Game = new FastType({
+						message: interaction,
+						isSlashGame: true,
+						embed: {
+						  title: 'Fast Type',
+						  color: '#F3CFC6',
+						  description: 'You have **{time}** seconds to type the sentence below.'
+						},
+						timeoutTime: 10000,
+						sentence: difficultySetting,
+						winMessage: `Kangel won **¢${converted}**! Kangel finished the type race in **{time}** seconds with wpm of **{wpm}**.`,
+						loseMessage: `Kangel lost **¢${converted}**! Kangel didn\'t type the correct sentence in time.`,
+					});
+					  
+					Game.startGame();
+					Game.on('gameOver', result => {
+						if(result.result === "lose") {
+							return gambleLoss()
+						}
+	
+						if(result.result === "win") {
+							return gambleWin()
+						}
+					});
+				}
+
+				if(diff === "easy") {
+					if(converted > 50) {
+						return interaction.reply({content: "The betting max is 50 coins for the easy difficulty!", ephemeral: true})
+					}
+
+					const Game = new FastType({
+						message: interaction,
+						isSlashGame: true,
+						embed: {
+						  title: 'Fast Type',
+						  color: '#F3CFC6',
+						  description: 'You have **{time}** seconds to type the sentence below.'
+						},
+						timeoutTime: 15000,
+						sentence: difficultySetting,
+						winMessage: `Kangel won **¢${converted}**! Kangel finished the type race in **{time}** seconds with wpm of **{wpm}**.`,
+						loseMessage: `Kangel lost **¢${converted}**! Kangel didn\'t type the correct sentence in time.`,
+					});
+					  
+					Game.startGame();
+					Game.on('gameOver', result => {
+						if(result.result === "lose") {
+							return gambleLoss()
+						}
+	
+						if(result.result === "win") {
+							return gambleWin()
+						}
+					});
+				}
 			}
 		}
     }

@@ -1,0 +1,56 @@
+diff --git a/node_modules/discord-gamecord/src/FastType.js b/node_modules/discord-gamecord/src/FastType.js
+index 53e6cc2..707aa45 100644
+--- a/node_modules/discord-gamecord/src/FastType.js
++++ b/node_modules/discord-gamecord/src/FastType.js
+@@ -58,7 +58,7 @@ module.exports = class FastType extends events {
+     .setColor(this.options.embed.color)
+     .setTitle(this.options.embed.title)
+     .setDescription(this.options.embed.description.replace('{time}', (this.options.timeoutTime/1000)))
+-    .addFields({ name: 'Sentence', value: this.options.sentence.split(' ').map(e => '`'+ e.split('').join(' ')+'`').join(' ') })
++    .addFields({ name: 'Sentence', value: this.options.sentence.split(' ').map(e => '​'+ e.split('').join('')+'​').join(' ') })
+     .setAuthor({ name: this.message.author.tag, iconURL: this.message.author.displayAvatarURL({ dynamic: true }) })
+ 
+ 
+diff --git a/node_modules/discord-gamecord/src/Wordle.js b/node_modules/discord-gamecord/src/Wordle.js
+index 933c3d8..30b570d 100644
+--- a/node_modules/discord-gamecord/src/Wordle.js
++++ b/node_modules/discord-gamecord/src/Wordle.js
+@@ -1,6 +1,8 @@
+ const { EmbedBuilder, AttachmentBuilder } = require('discord.js');
+ const words = require('../utils/words.json');
+ const events = require('events');
++const checkWord = require('check-if-word');
++wordsChecker = checkWord('en');
+ 
+ 
+ module.exports = class Wordle extends events {
+@@ -72,11 +74,13 @@ module.exports = class Wordle extends events {
+ 
+     collector.on('collect', async (m) => {
+       const guess = m.content.toLowerCase();
+-      if (m.deletable) await m.delete().catch(e => {});
++      if(wordsChecker.check(guess) === true) {
++        if (m.deletable) await m.delete().catch(e => {});
+ 
+-      this.guessed.push(guess);
+-      if (this.word === guess || this.guessed.length > 5) return collector.stop();
+-      await msg.edit({ embeds: [embed], files: [await this.getBoardImage()] });
++        this.guessed.push(guess);
++        if (this.word === guess || this.guessed.length > 5) return collector.stop();
++        await msg.edit({ embeds: [embed], files: [await this.getBoardImage()] });
++      }
+     })
+ 
+ 
+diff --git a/node_modules/discord-gamecord/utils/words.json b/node_modules/discord-gamecord/utils/words.json
+index d222f6a..cd411d5 100644
+--- a/node_modules/discord-gamecord/utils/words.json
++++ b/node_modules/discord-gamecord/utils/words.json
+@@ -7,5 +7,5 @@
+   "discord": ["nitro", "hypesquad", "server", "stickers", "clyde", "emoji", "banner", "partner", "boost", "roles", "bots", "voicecall", "brilliance", "balance", "tableflip"],
+   "winter": ["blankets", "coat", "arctic", "gloves", "heater", "hail", "hibernate", "ice", "jacket", "skates", "sled", "snowball", "socks", "sweater", "wool", "furnace", "frostbite"],
+   "pokemon": ["geodude", "doduo", "charmander", "beedril", "victreebel", "machoke", "raichu", "caterpie", "cubone", "mankey", "pikachu", "squirtle", "tauros", "pikachu", "bulbasaur"],
+-  "wordle": ["adore", "apple", "areas", "chair", "clear", "cores", "duels", "foamy", "ghoul", "guilt", "input", "intro", "laugh", "metro", "prone", "ruled", "seems", "shoes", "slime", "stain", "storm", "swipe", "topic", "tread", "under"]
++  "wordle": ["jazzy", "cable", "daddy", "eager", "metro", "hacks", "nacho", "rabid", "tabby", "xeric", "beast", "buggy", "bribe", "clerk", "chart", "cheat", "flirt", "float", "farce", "human", "lucky", "hotel", "howdy", "plaza", "sting", "stock", "twine", "yield", "youth", "zesty", "tenth", "tiara", "staff"]
+ }
+\ No newline at end of file
