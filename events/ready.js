@@ -2,6 +2,9 @@ const { Events } = require('discord.js');
 const mongoose = require('mongoose');
 const mongodbURL = process.env.MONGODB_URL;
 const logger = require('../logger');
+const Axios = require('axios')
+const { setupCache } = require('axios-cache-interceptor');
+const axios = setupCache(Axios)
 
 module.exports = {
 	name: Events.ClientReady,

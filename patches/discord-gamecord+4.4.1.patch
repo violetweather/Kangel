@@ -43,7 +43,7 @@ index 933c3d8..30b570d 100644
  
  
 diff --git a/node_modules/discord-gamecord/utils/words.json b/node_modules/discord-gamecord/utils/words.json
-index d222f6a..cd411d5 100644
+index d222f6a..3ef1ba8 100644
 --- a/node_modules/discord-gamecord/utils/words.json
 +++ b/node_modules/discord-gamecord/utils/words.json
 @@ -7,5 +7,5 @@
@@ -51,6 +51,6 @@ index d222f6a..cd411d5 100644
    "winter": ["blankets", "coat", "arctic", "gloves", "heater", "hail", "hibernate", "ice", "jacket", "skates", "sled", "snowball", "socks", "sweater", "wool", "furnace", "frostbite"],
    "pokemon": ["geodude", "doduo", "charmander", "beedril", "victreebel", "machoke", "raichu", "caterpie", "cubone", "mankey", "pikachu", "squirtle", "tauros", "pikachu", "bulbasaur"],
 -  "wordle": ["adore", "apple", "areas", "chair", "clear", "cores", "duels", "foamy", "ghoul", "guilt", "input", "intro", "laugh", "metro", "prone", "ruled", "seems", "shoes", "slime", "stain", "storm", "swipe", "topic", "tread", "under"]
-+  "wordle": ["jazzy", "cable", "daddy", "eager", "metro", "hacks", "nacho", "rabid", "tabby", "xeric", "beast", "buggy", "bribe", "clerk", "chart", "cheat", "flirt", "float", "farce", "human", "lucky", "hotel", "howdy", "plaza", "sting", "stock", "twine", "yield", "youth", "zesty", "tenth", "tiara", "staff"]
++  "wordle": ["jazzy", "cable", "daddy", "eager", "metro", "hacks", "nacho", "rabid", "tabby", "xeric", "beast", "buggy", "bribe", "clerk", "chart", "cheat", "flirt", "float", "farce", "human", "lucky", "hotel", "howdy", "plaza", "sting", "stock", "twine", "yield", "youth", "zesty", "tenth", "tiara", "staff", "crane", "frats", "clone", "drone", "pines", "penis", "poems", "chant", "faint", "pixel", "loved", "parts", "tally", "carts", "coast", "drive", "shine", "shave", "crime", "shame"]
  }
 \ No newline at end of file
