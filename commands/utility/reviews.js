@@ -21,36 +21,59 @@ module.exports = {
                 .setDescription('See server reviews')
                 ).setDMPermission(false),
 	async execute(interaction) {
-        await interaction.reply({content: "This command is not usable yet", ephemeral: true})
-        // let mention = await interaction.options.getUser('target').fetch({force: true})
+        if(interaction.options.getSubcommand() === 'user') {
+            let mention = await interaction.options.getUser('target').fetch({force: true})
+            const user = await User.findOne({
+                UserID: mention.id
+            })
 
-        // if(interaction.options.getSubcommand() === 'user') {
-        //     const user = await User.findOne({
-        //         UserID: mention.id
-        //     })
+            if(user) {
+                let reviews = [];
+                await user.Ratings.forEach(async ratings => {
+                    reviews.push(`**Review Author**: ${ratings.Author} \n **Review ID**: ${ratings._id} \n **Review Rating**: ★${ratings.StarRating} \n **Review Comment**: ${ratings.Comment}`)
+                });
 
-        //     if(user) {
-        //         let embed = new EmbedBuilder();
+                const embed = new EmbedBuilder()
+                .setColor("LuminousVividPink")
+                .setTimestamp()
+                .setTitle(`Reviews for ${mention.username}`)
+                .setDescription(reviews.join('\n \n').slice(0, 2000))
+        
+                await interaction.reply({embeds: [embed]});
+            } else {
+                let embed = new EmbedBuilder()
+                .setDescription("No reviews found for the user.")
+                .setColor("Red")
 
-        //         async function reviews() { 
-        //             user.Ratings.forEach((item, index) => {
-        //                 const [reviews] = `${index+1}. **${item.Author}** **[${item.StarRating}/5 ★]** [**Comment**: ${item.Comment}]`;
-        //                 return reviews;
-        //             })
-        //         }
+                return interaction.reply({embeds: [embed]})
+            }
+        }
 
-        //         console.log(reviews())
+        if(interaction.options.getSubcommand() === 'server') {
+            const server = await Server.findOne({
+                ServerID: interaction.guild.id
+            })
 
-        //         embed.setDescription(reviews())
-        //         interaction.reply({embeds: [embed]})
+            if(server) {
+                let reviews = [];
+                await server.Ratings.forEach(async ratings => {
+                    reviews.push(`**Review Author**: ${ratings.Author} \n **Review ID**: ${ratings._id} \n **Review Rating**: ★${ratings.StarRating} \n **Review Comment**: ${ratings.Comment}`)
+                });
 
-        //     } else {
-        //         let embed = new EmbedBuilder()
-        //         .setDescription("No reviews found for the user.")
-        //         .setColor("Red")
+                const embed = new EmbedBuilder()
+                .setColor("LuminousVividPink")
+                .setTimestamp()
+                .setTitle(`Reviews for ${interaction.guild.name}`)
+                .setDescription(reviews.join('\n \n').slice(0, 2000))
+        
+                await interaction.reply({embeds: [embed]});
+            } else {
+                let embed = new EmbedBuilder()
+                .setDescription("No reviews found for the server.")
+                .setColor("Red")
 
-        //         interaction.reply({embeds: [embed]})
-        //     }
-        // }
+                return interaction.reply({embeds: [embed]})
+            }
+        }
     }
 }
