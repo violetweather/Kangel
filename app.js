@@ -157,11 +157,21 @@ kangel.on(Events.InteractionCreate, async interaction => {
 	}
 
 	if(interaction.customId === "voted") {
+		let likers = [];
+		await data.LikeMembers.forEach(async member => {
+			likers.push(`<@${member}>`)
+		});
+
+		let dislikers = [];
+		await data.DislikeMembers.forEach(async member => {
+			dislikers.push(`<@${member}>`)
+		});
+
 		const embed = new EmbedBuilder()
 		.setColor("LuminousVividPink")
 		.setTimestamp()
-		.addFields({ name: "Like", value: `**${data.LikeMembers.join(', ').slice(0, 1020) || "No one liked this poll.."}**`, inline: true})
-		.addFields({ name: "Dislike", value: `**${data.DislikeMembers.join(', ').slice(0, 1020) || "No one disliked this poll."}**`, inline: true})
+		.addFields({ name: "Like", value: `**${likers.join(', ').slice(0, 1020) || "No one liked this poll.."}**`, inline: true})
+		.addFields({ name: "Dislike", value: `**${dislikers.join(', ').slice(0, 1020) || "No one disliked this poll."}**`, inline: true})
 
 		await interaction.reply({embeds: [embed], ephemeral: true});
 	}
