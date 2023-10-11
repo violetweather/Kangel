@@ -26,12 +26,14 @@ module.exports = {
 				const newCommand = require(`../${command.category}/${command.data.name}.js`);
 				interaction.client.commands.set(newCommand.data.name, newCommand);
 				await interaction.reply(`\`${newCommand.data.name}\` was reloaded!`);
+				return;
 			} catch (error) {
 				console.error(error);
 				await interaction.reply(`There was an error while reloading a command \`${command.data.name}\`:\n\`${error.message}\``);
+				return;
 			}
 		} else {
-			await interaction.reply({ content: 'You are not authorized to run this command.', ephemeral: true})
+			return interaction.reply({ content: 'You are not authorized to run this command.', ephemeral: true})
 		}
 	},
 };
