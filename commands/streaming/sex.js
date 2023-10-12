@@ -36,7 +36,7 @@ module.exports = {
                         $inc: {
                             DailyActivityCount: -1,
                             StressStat: -randomStress*0.5,
-                            MentalDarknessStat: randomMental*1.3,
+                            MentalDarknessStat: -randomMental*1.3,
                             AffectionStat: randomAffection*1.1,
                         }
                     }
@@ -50,7 +50,7 @@ module.exports = {
                     value: [
                         `Kangel's stress went down by **${randomStress*0.5.toFixed(2)}**!`,
                         `Kangel's affection went up by **${randomAffection*1.1.toFixed(2)}**!`,
-                        `Kangel's mental darkness went up by **${randomMental*1.3.toFixed(2)}**!`
+                        `Kangel's mental darkness went down by **${randomMental*1.3.toFixed(2)}**!`
                     ].join("\n"),
                     inline: true
                 },

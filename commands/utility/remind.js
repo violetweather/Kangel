@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
-const Reminders = require("../../Schemas.js/reminderSchema")
+const Reminders = require("../../Schemas.js/reminderSchema");
+const reminderSchema = require('../../Schemas.js/reminderSchema');
 
 module.exports = {
     category: "utility",
@@ -44,6 +45,11 @@ module.exports = {
             Remind: reminder
         });
 
+        let reminderDB = await Reminders.findOne({
+            User: interaction.user.id,
+            Time: time
+        })
+
         const embed = new EmbedBuilder()
         .setColor("LuminousVividPink")
         .addFields(
@@ -51,6 +57,7 @@ module.exports = {
                 value: [
                     `**Reminder set for**: <t:${Math.floor(time/1000)}:R>`,
                     `**What you will be reminded for**: ${reminder}`,
+                    `**Reminder ID** \`${reminderDB._id}\``
                 ].join("\n"),
                 inline: true
             },

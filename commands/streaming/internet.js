@@ -24,6 +24,7 @@ module.exports = {
         let data = await accountSchema.findOne({Guild: interaction.guild.id, User: interaction.user.id}).catch(err => {})
         const randomStress = Math.floor(Math.random() * (stressMax - stressMin + 1) + stressMin);
         const randomMental = Math.floor(Math.random() * (mentalMax - mentalMin + 1) + mentalMin);
+        const randomAffection = Math.floor(Math.random() * (affectionMax - affectionMin + 1) + affectionMin);
 
         if(data) {
             if(data.DailyActivityCount > 0) {
@@ -45,7 +46,8 @@ module.exports = {
                                 $inc: {
                                     DailyActivityCount: -1,
                                     StressStat: +randomStress*1.9,
-                                    MentalDarknessStat: +randomMental*0.8
+                                    MentalDarknessStat: +randomMental*0.8,
+                                    AffectionStat: -randomAffection*0.3
                                 }
                             }
                         )
@@ -57,7 +59,8 @@ module.exports = {
                         { name: `/st/`,
                             value: [
                                 `Kangel's stress went up by **${randomStress*1.9.toFixed(2)}**!`,
-                                `Kangel's mental darkness went up by **${randomMental*0.8.toFixed(2)}**!`
+                                `Kangel's mental darkness went up by **${randomMental*0.8.toFixed(2)}**!`,
+                                `Kangel's affection went down by **${randomAffection*0.3.toFixed(2)}**!`,
                             ].join("\n"),
                             inline: true
                         },

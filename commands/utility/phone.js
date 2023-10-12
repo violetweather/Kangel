@@ -183,7 +183,6 @@ module.exports = {
                 )
                 return interaction.reply({embeds:[embed]})
             }  catch (err) {
-                console.log(err)
                 return interaction.reply({content: "An error was encountered while running the command.", ephemeral: true})
             }
         }
