@@ -18,7 +18,7 @@ async function claimDailies(message, guild, user) {
                     }
                 )
 
-                return message.reply({content: `Kangel had good sleep! **[+3 daily activities]`})
+                return message.reply({content: `Kangel had good sleep! **[+3 daily activities]**`})
             } catch(err) {
                 console.log(err);
             }
