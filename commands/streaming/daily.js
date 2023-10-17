@@ -247,7 +247,7 @@ module.exports = {
                         embed.addFields(
                             { name: `<:heart:1155448985956397078> Kangel completed her daily stream!`,
                                 value: [
-                                    `Kangel gained **${nf.format(randomFollower*1.1)} new followers**!`,
+                                    `Kangel gained **${randomFollower*1.1.toFixed(0)} new followers**!`,
                                     `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.1)} in Ad Revenue**!`,
                                     `Kangel's stress went up by **${nf.format(randomStress*1.2)}**!`,
                                     `Kangel's affection went down by **${nf.format(randomAffection*0.3)}**!`,
@@ -266,7 +266,7 @@ module.exports = {
                         embed.addFields(
                             { name: `<:heart:1155448985956397078> Kangel completed her daily stream!`,
                                 value: [
-                                    `Kangel gained **${nf.format(randomFollower*1.00)} new followers**!`,
+                                    `Kangel gained **${randomFollower*1.00.toFixed(0)} new followers**!`,
                                     `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.00)} in Ad Revenue**!`,
                                     `Kangel's stress went up by **${nf.format(randomStress*1.00)}**!`,
                                     `Kangel's affection went down by **${nf.format(randomAffection*0.1)}**!`,
@@ -285,7 +285,7 @@ module.exports = {
                         embed.addFields(
                             { name: `<:heart:1155448985956397078> Kangel completed her daily stream!`,
                                 value: [
-                                    `Kangel gained **${nf.format(randomFollower*1.4)} new followers**!`,
+                                    `Kangel gained **${randomFollower*1.4.toFixed(0)} new followers**!`,
                                     `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.2)} in Ad Revenue**!`,
                                     `Kangel's stress went up by **${nf.format(randomStress*1.4)}**!`,
                                     `Kangel's affection went down by **${nf.format(randomAffection*0.6)}**!`,
