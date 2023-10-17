@@ -17,7 +17,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('sillies')
-                .setDescription('Do some silly stuff with Kangel :wink:'))
+                .setDescription('Do some silly stuff with Kangel :wink: (-3 daily points)'))
                 .addSubcommand(subcommand =>
                     subcommand
                         .setName('medications')
@@ -33,7 +33,7 @@ module.exports = {
                         .addSubcommand(subcommand =>
                             subcommand
                                 .setName('stream')
-                                .setDescription('Make Kangel stream once a day!')
+                                .setDescription('Make Kangel stream once a day! (-4 daily points)')
                                 .addStringOption(option =>
                                     option.setName('topic')
                                         .setDescription('Set a topic for your stream!')
@@ -46,7 +46,7 @@ module.exports = {
                                 .addSubcommand(subcommand =>
                                     subcommand
                                         .setName('internet')
-                                        .setDescription('Browse the Internet with Kangel!')
+                                        .setDescription('Browse the Internet with Kangel! (-1 daily points)')
                                         .addStringOption(option =>
                                             option.setName('where')
                                                 .setDescription('Select where to go on the internets')
@@ -55,6 +55,8 @@ module.exports = {
                                                     {name: '/st/', value: 'st'},
                                         ))),
     async execute(interaction) {
+        const nf = new Intl.NumberFormat('en-US');
+
         const { options, user, guild } = interaction;
         let data = await accountSchema.findOne({Guild: interaction.guild.id, User: interaction.user.id}).catch(err => {})
         const randomStress = Math.floor(Math.random() * (stressMax - stressMin + 1) + stressMin);
@@ -81,7 +83,7 @@ module.exports = {
                             {Guild: interaction.guild.id, User: interaction.user.id},
                             {
                                 $inc: {
-                                    DailyActivityCount: -1,
+                                    DailyActivityCount: -3,
                                     StressStat: -randomStress*0.5,
                                     MentalDarknessStat: -randomMental*1.3,
                                     AffectionStat: randomAffection*1.1,
@@ -95,9 +97,9 @@ module.exports = {
                     embed.addFields(
                         { name: `<:heart:1155448985956397078>`,
                             value: [
-                                `Kangel's stress went down by **${randomStress*0.5.toFixed(2)}**!`,
-                                `Kangel's affection went up by **${randomAffection*1.1.toFixed(2)}**!`,
-                                `Kangel's mental darkness went down by **${randomMental*1.3.toFixed(2)}**!`
+                                `Kangel's stress went down by **${nf.format(randomStress*0.5)}**!`,
+                                `Kangel's affection went up by **${nf.format(randomAffection*1.1)}**!`,
+                                `Kangel's mental darkness went down by **${nf.format(randomMental*1.3)}**!`
                             ].join("\n"),
                             inline: true
                         },
@@ -128,7 +130,7 @@ module.exports = {
                                     {Guild: interaction.guild.id, User: interaction.user.id},
                                     {
                                         $inc: {
-                                            DailyActivityCount: -1,
+                                            DailyActivityCount: -3,
                                             StressStat: -randomStress*1.5,
                                             MentalDarknessStat: +randomMental*0.6
                                         }
@@ -141,8 +143,8 @@ module.exports = {
                             embed.addFields(
                                 { name: `<:heart:1155448985956397078> Magic Smoke!`,
                                     value: [
-                                        `Kangel's stress went down by **${randomStress*1.5.toFixed(2)}**!`,
-                                        `Kangel's mental darkness went up by **${randomMental*0.6.toFixed(2)}**!`
+                                        `Kangel's stress went down by **${nf.format(randomStress*1.5)}**!`,
+                                        `Kangel's mental darkness went up by **${nf.format(randomMental*0.6)}**!`
                                     ].join("\n"),
                                     inline: true
                                 },
@@ -161,7 +163,7 @@ module.exports = {
                                     {Guild: interaction.guild.id, User: interaction.user.id},
                                     {
                                         $inc: {
-                                            DailyActivityCount: -1,
+                                            DailyActivityCount: -3,
                                             StressStat: -randomStress*1.2,
                                             MentalDarknessStat: +randomMental*0.5
                                         }
@@ -174,8 +176,8 @@ module.exports = {
                             embed.addFields(
                                 { name: `<:heart:1155448985956397078> Dylsem!`,
                                     value: [
-                                        `Kangel's stress went down by **${randomStress*1.2.toFixed(2)}**!`,
-                                        `Kangel's mental darkness went up by **${randomMental*0.5.toFixed(2)}**!`
+                                        `Kangel's stress went down by **${nf.format(randomStress*1.2)}**!`,
+                                        `Kangel's mental darkness went up by **${nf.format(randomMental*0.5)}**!`
                                     ].join("\n"),
                                     inline: true
                                 },
@@ -223,7 +225,7 @@ module.exports = {
                                     $inc: {
                                         Followers: randomFollower*followerTimes.toFixed(0),
                                         Wallet: randomAmount*walletTimes.toFixed(0),
-                                        DailyActivityCount: -1,
+                                        DailyActivityCount: -4,
                                         StressStat: randomStress*stressTimes,
                                         MentalDarknessStat: randomMental*mentalTimes,
                                         AffectionStat: -randomAffection*affectionTimes,
@@ -245,11 +247,11 @@ module.exports = {
                         embed.addFields(
                             { name: `<:heart:1155448985956397078> Kangel completed her daily stream!`,
                                 value: [
-                                    `Kangel gained **${randomFollower*1.1.toFixed(0)} new followers**!`,
-                                    `Kangel earned **¢${randomAmount*1.1.toFixed(0)} in Ad Revenue**!`,
-                                    `Kangel's stress went up by **${randomStress*1.2.toFixed(2)}**!`,
-                                    `Kangel's affection went down by **${randomAffection*0.3.toFixed(2)}**!`,
-                                    `Kangel's mental darkness went up by **${randomMental*1.1.toFixed(2)}**!`
+                                    `Kangel gained **${nf.format(randomFollower*1.1)} new followers**!`,
+                                    `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.1)} in Ad Revenue**!`,
+                                    `Kangel's stress went up by **${nf.format(randomStress*1.2)}**!`,
+                                    `Kangel's affection went down by **${nf.format(randomAffection*0.3)}**!`,
+                                    `Kangel's mental darkness went up by **${nf.format(randomMental*1.1)}**!`
                                 ].join("\n"),
                                 inline: true
                             },
@@ -264,11 +266,11 @@ module.exports = {
                         embed.addFields(
                             { name: `<:heart:1155448985956397078> Kangel completed her daily stream!`,
                                 value: [
-                                    `Kangel gained **${randomFollower*1.00.toFixed(0)} new followers**!`,
-                                    `Kangel earned **¢${randomAmount*1.00.toFixed(0)} in Ad Revenue**!`,
-                                    `Kangel's stress went up by **${randomStress*1.00.toFixed(2)}**!`,
-                                    `Kangel's affection went down by **${randomAffection*0.1.toFixed(2)}**!`,
-                                    `Kangel's mental darkness went up by **${randomMental*1.2.toFixed(2)}**!`
+                                    `Kangel gained **${nf.format(randomFollower*1.00)} new followers**!`,
+                                    `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.00)} in Ad Revenue**!`,
+                                    `Kangel's stress went up by **${nf.format(randomStress*1.00)}**!`,
+                                    `Kangel's affection went down by **${nf.format(randomAffection*0.1)}**!`,
+                                    `Kangel's mental darkness went up by **${nf.format(randomMental*1.2)}**!`
                                 ].join("\n"),
                                 inline: true
                             },
@@ -283,11 +285,11 @@ module.exports = {
                         embed.addFields(
                             { name: `<:heart:1155448985956397078> Kangel completed her daily stream!`,
                                 value: [
-                                    `Kangel gained **${randomFollower*1.4.toFixed(0)} new followers**!`,
-                                    `Kangel earned **¢${randomAmount*1.2.toFixed(0)} in Ad Revenue**!`,
-                                    `Kangel's stress went up by **${randomStress*1.4.toFixed(1)}**!`,
-                                    `Kangel's affection went down by **${randomAffection*0.6.toFixed(2)}**!`,
-                                    `Kangel's mental darkness went up by **${randomMental*1.1.toFixed(2)}**!`
+                                    `Kangel gained **${nf.format(randomFollower*1.4)} new followers**!`,
+                                    `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.2)} in Ad Revenue**!`,
+                                    `Kangel's stress went up by **${nf.format(randomStress*1.4)}**!`,
+                                    `Kangel's affection went down by **${nf.format(randomAffection*0.6)}**!`,
+                                    `Kangel's mental darkness went up by **${nf.format(randomMental*1.1)}**!`
                                 ].join("\n"),
                                 inline: true
                             },
@@ -333,9 +335,9 @@ module.exports = {
                             embed.addFields(
                                 { name: `/st/`,
                                     value: [
-                                        `Kangel's stress went up by **${randomStress*1.9.toFixed(2)}**!`,
-                                        `Kangel's mental darkness went up by **${randomMental*0.8.toFixed(2)}**!`,
-                                        `Kangel's affection went down by **${randomAffection*0.3.toFixed(2)}**!`,
+                                        `Kangel's stress went up by **${nf.format(randomStress*1.9)}**!`,
+                                        `Kangel's mental darkness went up by **${nf.format(randomMental*0.8)}**!`,
+                                        `Kangel's affection went down by **${nf.format(randomAffection*0.3)}**!`,
                                     ].join("\n"),
                                     inline: true
                                 },

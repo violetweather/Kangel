@@ -13,12 +13,12 @@ async function claimDailies(message, guild, user) {
                     {Guild: guild, User: user},
                     {
                         $inc: {
-                            DailyActivityCount: +3
+                            DailyActivityCount: +10
                         }
                     }
                 )
 
-                return message.reply({content: `Kangel had good sleep! **[+3 daily activities]**`})
+                return message.reply({content: `Kangel had good sleep! **[+10 daily activities]**`})
             } catch(err) {
                 console.log(err);
             }

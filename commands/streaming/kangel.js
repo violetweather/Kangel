@@ -14,14 +14,13 @@ module.exports = {
                 .setDescription('Select an option for Kangel\'s stream account')
                 .addChoices(
                     {name: 'start', value: 'acc_create'},
-                    {name: 'info', value: 'acc_info'},
+                    {name: 'data', value: 'acc_info'},
                     {name: "end", value: 'acc_del'},
-                    {name: "stats", value: 'acc_stats'},
                     {name: "claim", value: "acc_claim"}
                 ).setRequired(true)),
 	async execute(interaction) {
+        const nf = new Intl.NumberFormat('en-US');
         const { options, user, guild } = interaction;
-
         let data = await accountSchema.findOne({Guild: interaction.guild.id, User: user.id}).catch(err => {})
 
         switch(options.getString("options")) {
@@ -34,10 +33,11 @@ module.exports = {
                     Followers: 1,
                     Wallet: 100,
                     Bank: 0,
+                    Crystal: 10,
                     StressStat: 10,
                     AffectionStat: 10,
                     MentalDarknessStat: 10,
-                    DailyActivityCount: 3,
+                    DailyActivityCount: 10,
                 })
 
                 await data.save()
@@ -51,7 +51,8 @@ module.exports = {
 						value: [
 							`*You're her only follower right now.*`,
 							`**You'll give her 100 coins to get through the beginning**`,
-                            `**You have 3 actions per day!**`,
+                            `***She starts out with 10 Angel Crystal! Use these with caution.***`,
+                            `**You have 10 action points per day!**`,
                             `->>> You are in control of Kangel, every choice you make will impact Kangel.`
 						].join("\n"),
 					},
@@ -66,13 +67,18 @@ module.exports = {
                 let embed = new EmbedBuilder()
                 .setColor("LuminousVividPink")
                 .addFields(
-					{ name: `🎉 Kangel's streamer account:`,
+					{ name: `<:heart:1155448985956397078> Kangel Save Data`,
 						value: [
-							`**Kangel's Followers**: ${data.Followers}`,
-							`**Angel Coins (¢)**: ${data.Wallet}`,
-                            `**Your Bank**: ${data.Bank}`,
-                            `**Remaining Daily Actions**: ${data.DailyActivityCount}`,
+							`**👤 Followers**: ${data.Followers}`,
+                            `\n **<:8187:1163707516417486879> Angel Crystals**: ${data.Crystal}`,
+							`**<:coins:1163712428975079456> Angel Coins **: ${data.Wallet}`,
+                            `**🏦 Angel Bank**: ${data.Bank}`,
+                            `\n **📅 Remaining Daily Points**: ${data.DailyActivityCount} \n`,
+                            `**😞 Stress**: ${nf.format(data.StressStat)}`,
+							`**💗 Affection**: ${nf.format(data.AffectionStat)}`,
+                            `**😵‍💫 Mental Darkness**: ${nf.format(data.MentalDarknessStat)}`
 						].join("\n"),
+                        inline: true,
 					},
 				)
 
@@ -85,24 +91,6 @@ module.exports = {
                 await data.deleteOne()
 
                 await interaction.reply({ content: "Kangel's streamer account has been deleted."})
-            }
-            break;
-            case "acc_stats": {
-                if(!data) return interaction.reply({content: "You haven't created Kangel a streamer account..", ephemeral: true})
-                
-                let embed = new EmbedBuilder()
-                .setColor("LuminousVividPink")
-                .addFields(
-					{ name: `<:heart:1155448985956397078> My live stats`,
-						value: [
-							`**😞 Stress**: ${data.StressStat.toFixed(2)}`,
-							`**💗 Affection**: ${data.AffectionStat.toFixed(2)}`,
-                            `**😵‍💫 Mental Darkness**: ${data.MentalDarknessStat.toFixed(2)}`
-						].join("\n"),
-					},
-				)
-
-                await interaction.reply({embeds: [embed]})
             }
             break;
             case "acc_claim": {

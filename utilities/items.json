@@ -1,0 +1,168 @@
+{
+    "zero_star": [
+            {
+                "type": "item",
+                "name": "🧻 Unused Toilet Paper",
+                "description": "Completely unused toilet paper, how nice! Yet, so unvaluable.",
+                "rarity": "zero_star",
+                "id": "0"
+            },
+            {
+                "type": "item",
+                "name": "📰 Boring-Headline Newspaper",
+                "description": "The headline is probably about someone eating a burger.",
+                "rarity": "zero_star",
+                "id": "1"
+            },
+            {
+                "type": "item",
+                "name": "🗒️ Venting Notes",
+                "description": "Why does this matter?",
+                "rarity": "zero_star",
+                "id": "2"
+            },
+            {
+                "type": "item",
+                "name": "📃 Scrapped Venting Notes",
+                "description": "I don't care about these.",
+                "rarity": "zero_star",
+                "id": "3"
+            },
+            {
+                "type": "item",
+                "name": "🔗 Boring Website",
+                "description": "Some website about jobs, you can apply to them instantly too? Boring.",
+                "rarity": "zero_star",
+                "id": "4"
+            },
+            {
+                "type": "item",
+                "name": "🗞️ Rolled-up Newspaper",
+                "description": "Who left this here..",
+                "rarity": "zero_star",
+                "id": "5"
+            },
+            {
+                "type": "item",
+                "name": "🗑️ Literal garbage",
+                "description": "Pick it up, lazy.",
+                "rarity": "zero_star",
+                "id": "6"
+            },
+            {
+                "type": "item",
+                "name": "💻 E-waste",
+                "description": "E-waste. Products that only exist to waste the precious materials in this world.",
+                "rarity": "zero_star",
+                "id": "7"
+            },
+            {
+                "type": "item",
+                "name": "💽 1984 porno",
+                "description": "Probably covered with some stuff.. I wouldn't even touch it. It's not that good.",
+                "rarity": "zero_star",
+                "id": "8"
+            },
+            {
+                "type": "item",
+                "name": "📟 Pager",
+                "description": "What is this??",
+                "rarity": "zero_star",
+                "id": "9"
+            },
+            {
+                "type": "item",
+                "name": "📼 Some trash old music",
+                "description": "Music.... not that good.",
+                "rarity": "zero_star",
+                "id": "10"
+            }
+        ],
+    "one_star": [
+            {
+                "type": "item",
+                "name": "🧻 Used Toilet Paper",
+                "description": "Very valuable when used, to some people, don't question it.",
+                "rarity": "one_star",
+                "id": "1000"
+            },
+            {
+                "type": "item",
+                "name": "📰 Blood-stained Newspaper",
+                "description": "Uh. I don't know.",
+                "rarity": "one_star",
+                "id": "1001"
+            },
+            {
+                "type": "item",
+                "name": "📃 Scary Venting Notes",
+                "description": "I wrote too much here.",
+                "rarity": "one_star",
+                "id": "1002"
+            },
+            {
+                "type": "item",
+                "name": "🔗 Pirating Website",
+                "description": "This is where I got my copy of Person 3..",
+                "rarity": "one_star",
+                "id": "1003"
+            },
+            {
+                "type": "item",
+                "name": "💻 Windows Laptop",
+                "description": "Is this good? It works okay.",
+                "rarity": "one_star",
+                "id": "1004"
+            },
+            {
+                "type": "item",
+                "name": "💽 2001 porno",
+                "description": "Wow, porn has gone far.",
+                "rarity": "one_star",
+                "id": "1005"
+            },
+            {
+                "type": "item",
+                "name": "📼 Some decent old music",
+                "description": "It's alright.. but when did Bladee start making music??",
+                "rarity": "one_star",
+                "id": "1006"
+            }
+        ],
+    "two_star": [
+            {
+                "type": "item",
+                "name": "💍 Angel Ring",
+                "description": "The Angel Ring is an special item that Kangel will value. Once used, affection stats will increase even in activities where it shouldn't.",
+                "status_effect": 1,
+                "rarity": "two_star",
+                "id": "2000"
+            },
+            {
+                "type": "item",
+                "name": "🗽 Statue of Liberty",
+                "description": "THE STATUE OF LIBERTY! FREEDOM! Kangel will decrease even more mental darkness and stress.",
+                "status_effect": 2,
+                "rarity": "two_star",
+                "id": "2001"
+            },
+            {
+                "type": "item",
+                "name": "🍕 Pizza",
+                "description": "Tasty. Pizza. Kangel's hunger is satisfied but she worries about her weight. Mental darkness increases more, affection decreases, and stress increases.",
+                "status_effect": 3,
+                "rarity": "two_star",
+                "id": "2002"
+            }
+    ],
+    "three_star": [
+        {
+            "type": "character",
+            "name": "Not available.",
+            "description": "N/A",
+            "image": "",
+            "rarity": "three_star",
+            "id": "3000"
+        }
+    ]
+}
