@@ -8,10 +8,11 @@ let pullRecordSchema = new Schema({
 });
 
 let itemSchema = new Schema({
-    ItemDate: { type: Date, default: Date.now},
+    ItemDate: Date,
     ItemRarity: String,
     ItemName: String,
-    ItemID: Number
+    ItemID: Number,
+    ItemRarityStandard: String
 });
 
 

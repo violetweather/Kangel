@@ -5,6 +5,7 @@
                 "name": "🧻 Unused Toilet Paper",
                 "description": "Completely unused toilet paper, how nice! Yet, so unvaluable.",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "0"
             },
             {
@@ -12,6 +13,7 @@
                 "name": "📰 Boring-Headline Newspaper",
                 "description": "The headline is probably about someone eating a burger.",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "1"
             },
             {
@@ -19,6 +21,7 @@
                 "name": "🗒️ Venting Notes",
                 "description": "Why does this matter?",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "2"
             },
             {
@@ -26,6 +29,7 @@
                 "name": "📃 Scrapped Venting Notes",
                 "description": "I don't care about these.",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "3"
             },
             {
@@ -33,6 +37,7 @@
                 "name": "🔗 Boring Website",
                 "description": "Some website about jobs, you can apply to them instantly too? Boring.",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "4"
             },
             {
@@ -40,6 +45,7 @@
                 "name": "🗞️ Rolled-up Newspaper",
                 "description": "Who left this here..",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "5"
             },
             {
@@ -47,6 +53,7 @@
                 "name": "🗑️ Literal garbage",
                 "description": "Pick it up, lazy.",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "6"
             },
             {
@@ -54,6 +61,7 @@
                 "name": "💻 E-waste",
                 "description": "E-waste. Products that only exist to waste the precious materials in this world.",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "7"
             },
             {
@@ -61,6 +69,7 @@
                 "name": "💽 1984 porno",
                 "description": "Probably covered with some stuff.. I wouldn't even touch it. It's not that good.",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "8"
             },
             {
@@ -68,6 +77,7 @@
                 "name": "📟 Pager",
                 "description": "What is this??",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "9"
             },
             {
@@ -75,6 +85,7 @@
                 "name": "📼 Some trash old music",
                 "description": "Music.... not that good.",
                 "rarity": "zero_star",
+                "normal_rarity": "0★",
                 "id": "10"
             }
         ],
@@ -84,6 +95,7 @@
                 "name": "🧻 Used Toilet Paper",
                 "description": "Very valuable when used, to some people, don't question it.",
                 "rarity": "one_star",
+                "normal_rarity": "1★",
                 "id": "1000"
             },
             {
@@ -91,6 +103,7 @@
                 "name": "📰 Blood-stained Newspaper",
                 "description": "Uh. I don't know.",
                 "rarity": "one_star",
+                "normal_rarity": "1★",
                 "id": "1001"
             },
             {
@@ -98,6 +111,7 @@
                 "name": "📃 Scary Venting Notes",
                 "description": "I wrote too much here.",
                 "rarity": "one_star",
+                "normal_rarity": "1★",
                 "id": "1002"
             },
             {
@@ -105,6 +119,7 @@
                 "name": "🔗 Pirating Website",
                 "description": "This is where I got my copy of Person 3..",
                 "rarity": "one_star",
+                "normal_rarity": "1★",
                 "id": "1003"
             },
             {
@@ -112,6 +127,7 @@
                 "name": "💻 Windows Laptop",
                 "description": "Is this good? It works okay.",
                 "rarity": "one_star",
+                "normal_rarity": "1★",
                 "id": "1004"
             },
             {
@@ -119,6 +135,7 @@
                 "name": "💽 2001 porno",
                 "description": "Wow, porn has gone far.",
                 "rarity": "one_star",
+                "normal_rarity": "1★",
                 "id": "1005"
             },
             {
@@ -126,6 +143,7 @@
                 "name": "📼 Some decent old music",
                 "description": "It's alright.. but when did Bladee start making music??",
                 "rarity": "one_star",
+                "normal_rarity": "1★",
                 "id": "1006"
             }
         ],
@@ -136,6 +154,7 @@
                 "description": "The Angel Ring is an special item that Kangel will value. Once used, affection stats will increase even in activities where it shouldn't.",
                 "status_effect": 1,
                 "rarity": "two_star",
+                "normal_rarity": "2★",
                 "id": "2000"
             },
             {
@@ -144,6 +163,7 @@
                 "description": "THE STATUE OF LIBERTY! FREEDOM! Kangel will decrease even more mental darkness and stress.",
                 "status_effect": 2,
                 "rarity": "two_star",
+                "normal_rarity": "2★",
                 "id": "2001"
             },
             {
@@ -152,17 +172,28 @@
                 "description": "Tasty. Pizza. Kangel's hunger is satisfied but she worries about her weight. Mental darkness increases more, affection decreases, and stress increases.",
                 "status_effect": 3,
                 "rarity": "two_star",
+                "normal_rarity": "2★",
                 "id": "2002"
             }
     ],
     "three_star": [
         {
             "type": "character",
-            "name": "Not available.",
+            "name": "<:eris:1164023601368932382> Eris",
             "description": "N/A",
+            "image": "https://i.imgur.com/cAgsqto.png",
+            "rarity": "three_star",
+            "normal_rarity": "3★",
+            "id": "3000"
+        },
+        {
+            "type": "character",
+            "name": "Skye",
+            "description": "Commonly known as Skye (Not a birth name) \n Not much is known about her past besides being born in Russia before immigrating to Sweden and starting a crime empire in stockholm. So secretive, that even its members thought they were just workers for some legit company. Ever since the police caught a sniff of her shady business, her whereabouts became unknown, though presumably she's currently hiding in the netherlands.",
             "image": "",
             "rarity": "three_star",
-            "id": "3000"
+            "normal_rarity": "3★",
+            "id": "3001"
         }
     ]
 }

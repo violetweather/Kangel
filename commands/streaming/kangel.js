@@ -10,14 +10,15 @@ module.exports = {
 		.setDescription('Start your journey to make Kangel an INTERNET ANGEL')
         .setDMPermission(false)
         .addStringOption(option => 
-                option.setName('options')
-                .setDescription('Select an option for Kangel\'s stream account')
-                .addChoices(
-                    {name: 'start', value: 'acc_create'},
-                    {name: 'data', value: 'acc_info'},
-                    {name: "end", value: 'acc_del'},
-                    {name: "claim", value: "acc_claim"}
-                ).setRequired(true)),
+            option.setName('options')
+            .setDescription('Select an option for Kangel\'s stream account')
+            .addChoices(
+                {name: 'start', value: 'acc_create'},
+                {name: 'data', value: 'acc_info'},
+                {name: "end", value: 'acc_del'},
+                {name: "claim", value: "acc_claim"},
+                {name: "vault", value: 'acc_vault'}
+            ).setRequired(true)),
 	async execute(interaction) {
         const nf = new Intl.NumberFormat('en-US');
         const { options, user, guild } = interaction;
@@ -38,6 +39,7 @@ module.exports = {
                     AffectionStat: 10,
                     MentalDarknessStat: 10,
                     DailyActivityCount: 10,
+                    LastActivity: Date.now()
                 })
 
                 await data.save()
@@ -101,6 +103,36 @@ module.exports = {
                 } else if (data.DailyActivityCount === 0) {
                     return claimDailies(interaction, interaction.guild.id, interaction.user.id);
                 }
+            }
+            break;
+            case "acc_vault": {
+                if(!data) return interaction.reply({content: "You haven't created Kangel a streamer account..", ephemeral: true})
+                if(data.Items.length === 0) return interaction.reply({content: "No items or characters found in your account!", ephemeral: true})
+
+                const capitalise = (str) => str.replace(/\b[a-z]/g, (c) => c.toUpperCase());
+                
+                const counts = data.Items
+                  .toSorted((a, b) => b.ItemID - a.ItemID) // sort by ID highest to lowest
+                  .reduce((acc, { ItemID, ItemName, ItemRarityStandard }) => {
+                    acc[ItemID] ??= {
+                        ItemName,
+                        ItemRarityStandard,
+                        count: 0,
+                    };
+                    acc[ItemID].count++;
+                    return acc;
+                }, {});
+                
+                const str = Object.values(counts)
+                .map(({ ItemName, ItemRarityStandard, count }) => `${count}x ${capitalise(ItemName)} **${ItemRarityStandard}**`)
+                .join("\n");
+
+                let embed = new EmbedBuilder()
+                .setColor("LuminousVividPink")
+                .setTitle("Amount owned | Name | Rarity")
+                .setDescription(str)
+
+                interaction.reply({embeds:[embed]})
             }
         }
     }

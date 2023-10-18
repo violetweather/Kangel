@@ -69,9 +69,9 @@ module.exports = {
             case "sillies": {
                 if(data) {
                     if(data.DailyActivityCount > 0) {
-                        checkDailies(interaction, interaction.guild.id, interaction.user.id)
-                    } else if (data.DailyActivityCount === 0) {
-                        return checkDailies(interaction, interaction.guild.id, interaction.user.id)
+                        checkDailies(interaction, interaction.guild.id, interaction.user.id, -3)
+                    } else if (data.DailyActivityCount === 0 || data.DailyActivityCount < 0) {
+                        return checkDailies(interaction, interaction.guild.id, interaction.user.id, -3)
                     }
         
                     let embed = new EmbedBuilder()
@@ -114,9 +114,9 @@ module.exports = {
             case "medications": {
                 if(data) {
                     if(data.DailyActivityCount > 0) {
-                        checkDailies(interaction, interaction.guild.id, interaction.user.id)
+                        checkDailies(interaction, interaction.guild.id, interaction.user.id, -3)
                     } else if (data.DailyActivityCount === 0) {
-                        return checkDailies(interaction, interaction.guild.id, interaction.user.id)
+                        return checkDailies(interaction, interaction.guild.id, interaction.user.id, -3)
                     }
         
                     switch(options.getString("give")) {
@@ -202,9 +202,9 @@ module.exports = {
                     }
         
                     if(data.DailyActivityCount > 0) {
-                        checkDailies(interaction, interaction.guild.id, interaction.user.id)
+                        checkDailies(interaction, interaction.guild.id, interaction.user.id, -4)
                     } else if (data.DailyActivityCount === 0) {
-                        return checkDailies(interaction, interaction.guild.id, interaction.user.id)
+                        return checkDailies(interaction, interaction.guild.id, interaction.user.id, -4)
                     }
                     
                     const randomFollower = Math.floor(Math.random() * (dailyMax - dailyMin + 1) + dailyMin);
@@ -305,9 +305,9 @@ module.exports = {
             case "internet": {
                 if(data) {
                     if(data.DailyActivityCount > 0) {
-                        checkDailies(interaction, interaction.guild.id, interaction.user.id)
+                        checkDailies(interaction, interaction.guild.id, interaction.user.id, -1)
                     } else if (data.DailyActivityCount === 0) {
-                        return checkDailies(interaction, interaction.guild.id, interaction.user.id)
+                        return checkDailies(interaction, interaction.guild.id, interaction.user.id, -1)
                     }
         
                     switch(options.getString("where")) {
