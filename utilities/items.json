@@ -180,7 +180,7 @@
         {
             "type": "character",
             "name": "<:eris:1164023601368932382> Eris",
-            "description": "N/A",
+            "description": "MMO addicted cosplayer who has poor luck.",
             "image": "https://i.imgur.com/cAgsqto.png",
             "rarity": "three_star",
             "normal_rarity": "3★",
@@ -188,9 +188,9 @@
         },
         {
             "type": "character",
-            "name": "Skye",
+            "name": "<:skye:1164145689203318804> Skye",
             "description": "Commonly known as Skye (Not a birth name) \n Not much is known about her past besides being born in Russia before immigrating to Sweden and starting a crime empire in stockholm. So secretive, that even its members thought they were just workers for some legit company. Ever since the police caught a sniff of her shady business, her whereabouts became unknown, though presumably she's currently hiding in the netherlands.",
-            "image": "",
+            "image": "https://i.imgur.com/9tuGzHl.png",
             "rarity": "three_star",
             "normal_rarity": "3★",
             "id": "3001"

@@ -1,6 +1,8 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, PermissionFlagsBits } = require('discord.js');
 const accountSchema = require("../../Schemas.js/account")
+const Banner = require("../../Schemas.js/banners")
 const gachaPull = require("../../utilities/gachaPullRate")
+const parseMs = require("parse-ms-2")
 
 module.exports = {
 	category: 'streaming',
@@ -68,13 +70,32 @@ module.exports = {
             }
             break;
             case "banners": {
+                let bannerData = await Banner.findOne({BannerName: "Featured"}).catch(err => {})
+
+                if(!bannerData) {
+                    try {
+                        await Banner.create({
+                            BannerName: "Featured",
+                            BannerStarted: Date.now()
+                        })
+                    } catch(err) {
+                        console.log(err)
+                    }
+                }
+
+                let bannerCooldown = 1382400000;
+                let bannerTimeLeft = bannerCooldown - (Date.now() - bannerData.BannerStarted);
+                const { days, hours, minutes, seconds } = parseMs(bannerTimeLeft);
+
                 let embed = new EmbedBuilder()
                 .setColor("LuminousVividPink")
                 .addFields(
-					{ name: `**BETA** Featured 0★ Heavenly Gacha Banner`,
+					{ name: `**BETA** Featured 3★ Heavenly Gacha Banner`,
 						value: [
-							`Pull for a chance to get a 0★! (1 pull = 1 <:8187:1163707516417486879> | 10 pull = 80 <:8187:1163707516417486879> [discount!])`,
-                            `Characters & Items have a 0-3 star rating, with the most valuable being at 3 star, and the least at 0 star.`
+                            `Banner is going away in **${days} days ${hours} hours and ${minutes} minutes.**\n`,
+                            `Featured Characters: 3★ <:eris:1164023601368932382> Eris and 3★ <:skye:1164145689203318804> Skye! \n`,
+							`Pull for a chance to get a 3★! \n - 1 pull = 10 <:8187:1163707516417486879> Angel Crystals | 10 pull = 80 <:8187:1163707516417486879> Angel Crystals [discount!])`,
+                            `\n Characters & Items have a 0-3 star rating, with the most valuable being at 3 star, and the least at 0 star.`
 						].join("\n"),
 					},
 				)
