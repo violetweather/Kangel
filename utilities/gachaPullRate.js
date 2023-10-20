@@ -4,25 +4,25 @@ const items = require("../utilities/items.json")
 
 async function gachaPull(message, bannerPick, pullPick) {
     let data = await accountSchema.findOne({Guild: message.guild.id, User: message.user.id}).catch(err => {})
-
-    function weightedSample(pairs) {
-        const n = Math.random() * 100;
-        const match = pairs.find(({value, probability}) => n <= probability);
-        return match ? match.value : last(pairs).value;
-    }
-
-    function last(array) {
-        return array[array.length - 1];
-    }
-    
-    const result = weightedSample([
-        {value: 'three_star', probability: 0.5},
-        {value: 'two_star', probability: 5},
-        {value: 'one_star', probability: 30},
-        {value: 'zero_star', probability: 64.5}
-    ]);
     
     if(bannerPick === "featured") {     
+        function weightedSample(pairs) {
+            const n = Math.random() * 100;
+            const match = pairs.find(({value, probability}) => n <= probability);
+            return match ? match.value : last(pairs).value;
+        }
+    
+        function last(array) {
+            return array[array.length - 1];
+        }
+        
+        const result = weightedSample([
+            {value: 'three_star', probability: 0.5},
+            {value: 'two_star', probability: 5},
+            {value: 'one_star', probability: 30},
+            {value: 'zero_star', probability: 64.5}
+        ]);
+        
         let embed = new EmbedBuilder()
 
         // item randomizer function
@@ -117,10 +117,27 @@ async function gachaPull(message, bannerPick, pullPick) {
         }
 
         async function pullMulti() {
-            let itemRarityRandomizer;
+            function weightedSample(pairs) {
+                const n = Math.random() * 100;
+                const match = pairs.find(({value, probability}) => n <= probability);
+                return match ? match.value : last(pairs).value;
+            }
+        
+            function last(array) {
+                return array[array.length - 1];
+            }
+            
+            const result = weightedSample([
+                {value: 'three_star', probability: 0.5},
+                {value: 'two_star', probability: 5},
+                {value: 'one_star', probability: 30},
+                {value: 'zero_star', probability: 64.5}
+            ]);
 
-            function randomizerItem(itemRarityRandomizer) {
-                const values = Object.values(itemRarityRandomizer)
+            let itemRarityRandomizer2;
+
+            function multiRandomizerItem(itemRarityRandomizer2) {
+                const values = Object.values(itemRarityRandomizer2)
                 const allValues = values[parseInt(Math.random() * values.length)]
                 const definedItem = allValues
 
@@ -153,7 +170,7 @@ async function gachaPull(message, bannerPick, pullPick) {
             }
 
             if(result === "zero_star") {
-                let definedItem = randomizerItem(items.zero_star);
+                let definedItem = multiRandomizerItem(items.zero_star);
                 await dbPUSH(definedItem)
 
                 embed.setTitle(`You pulled 0★! \n - ${definedItem.name}`)
@@ -162,7 +179,7 @@ async function gachaPull(message, bannerPick, pullPick) {
             }
 
             if(result === "one_star") {
-                let definedItem = randomizerItem(items.one_star)
+                let definedItem = multiRandomizerItem(items.one_star)
                 await dbPUSH(definedItem)
 
                 embed.setTitle(`You pulled 1★! \n - ${definedItem.name}`)
@@ -171,7 +188,7 @@ async function gachaPull(message, bannerPick, pullPick) {
             }
 
             if(result === "two_star") {
-                let definedItem = randomizerItem(items.two_star)
+                let definedItem = multiRandomizerItem(items.two_star)
                 await dbPUSH(definedItem)
 
                 embed.setTitle(`You pulled 2★! \n - ${definedItem.name}`)
@@ -180,7 +197,7 @@ async function gachaPull(message, bannerPick, pullPick) {
             }
 
             if(result === "three_star") {
-                let definedItem = randomizerItem(items.three_star)
+                let definedItem = multiRandomizerItem(items.three_star)
                 await dbPUSH(definedItem)
 
                 embed.setTitle(`You pulled 3★! \n - ${definedItem.name}`)
@@ -197,6 +214,7 @@ async function gachaPull(message, bannerPick, pullPick) {
             message.reply({content: "Running one pull...", ephemeral: true})
             await pull();
         }
+
         if(pullPick === "multi") {
             if(data.Crystal < 80) {
                 return message.reply("Multis require at least 80 <:8187:1163707516417486879> Angel Crystals")
@@ -213,7 +231,7 @@ async function gachaPull(message, bannerPick, pullPick) {
             message.reply({content: "Running 10 pull...", ephemeral: true})
 
             var i = 0;
-            call(function() { pullMulti()}, 2e3, 10);
+            call(async function() { await pullMulti()}, 2e3, 10);
 
             try {
                 await accountSchema.findOneAndUpdate(
