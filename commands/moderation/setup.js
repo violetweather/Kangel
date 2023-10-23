@@ -2,7 +2,6 @@ const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, 
 const guildSetupSchema = require('../../Schemas.js/guild_setup')
 
 module.exports = {
-    cooldown: 5,
 	category: 'setup',
 	data: new SlashCommandBuilder()
 		.setName('setup')
@@ -25,27 +24,8 @@ module.exports = {
 
         let data = guildSetupSchema.findOne({ GuildID: interaction.guild.id })
 
-            if(!data) {
-                await guildSetupSchema.create({
-                    GuildID: interaction.guild.id,
-                    LogChannelID: logChannel.id
-                });
-
-                embed.setDescription("Your logs channel has been successfully updated.")
-                .setColor("Green")
-                .setTimestamp();
-            } else if(data) {
-                guildSetupSchema.findOneAndDelete({ GuildID: interaction.guild.id});
-                await guildSetupSchema.create({
-                    GuildID: interaction.guild.id,
-                    LogChannelID: logChannel.id
-                })
-
-              embed.setDescription("Your logs channel has been successfully updated.")
-                .setColor("Green")
-                .setTimestamp();  
-            }
-
-            return interaction.reply({embeds: [embed], ephemeral: true})
+        if(!data) {
+            return interaction.reply({content: "Still testing this.. come back later", ephemeral: true})
+        }
     }
 }
