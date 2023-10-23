@@ -49,7 +49,7 @@ module.exports = {
                                                 .setDescription('Sell an item.'))),
     async execute(interaction) {
         const { options, user, guild } = interaction;
-        let data = await accountSchema.findOne({Guild: interaction.guild.id, User: user.id}).catch(err => {})
+        let data = await accountSchema.findOne({User: user.id}).catch(err => {})
 
         switch(options.getSubcommand()) {
             case "info": {
@@ -140,7 +140,7 @@ module.exports = {
                     async function purchase(coinBuy, crystalSell) {
                         try {
                             await accountSchema.findOneAndUpdate(
-                                {Guild: interaction.guild.id, User: interaction.user.id},
+                                {User: interaction.user.id},
                                 {
                                     $inc: {
                                         Wallet: -coinBuy,

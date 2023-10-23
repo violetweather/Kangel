@@ -22,7 +22,7 @@ module.exports = {
 	async execute(interaction) {
         const nf = new Intl.NumberFormat('en-US');
         const { options, user, guild } = interaction;
-        let data = await accountSchema.findOne({Guild: interaction.guild.id, User: user.id}).catch(err => {})
+        let data = await accountSchema.findOne({User: user.id}).catch(err => {})
 
         switch(options.getString("options")) {
             case "acc_create": {
@@ -99,9 +99,9 @@ module.exports = {
                 if(!data) return interaction.reply({content: "You haven't created Kangel a streamer account..", ephemeral: true})
 
                 if(data.DailyActivityCount > 0) {
-                    return claimDailies(interaction, interaction.guild.id, interaction.user.id);
+                    return claimDailies(interaction, interaction.user.id);
                 } else if (data.DailyActivityCount === 0) {
-                    return claimDailies(interaction, interaction.guild.id, interaction.user.id);
+                    return claimDailies(interaction, interaction.user.id);
                 }
             }
             break;

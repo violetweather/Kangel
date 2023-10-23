@@ -48,7 +48,7 @@ module.exports = {
 						.setDescription('Enter your gamble amount').setRequired(true))),
 	async execute(interaction) {
 		const { options, user, guild } = interaction;
-		let data = await accountSchema.findOne({Guild: interaction.guild.id, User: user.id}).catch(err => {})
+		let data = await accountSchema.findOne({User: user.id}).catch(err => {})
 		const value = options.getString("gamble")
 
 		if(!data) return interaction.reply({content: "Kangel doesn't have a streamer account.", ephemeral: true}) 
@@ -61,7 +61,7 @@ module.exports = {
 		// async function gambleALL() {
 		// 	let allNumber = data.Wallet - data.Wallet
 		// 	await accountSchema.findOneAndUpdate(
-		// 		{Guild: interaction.guild.id, User: interaction.user.id},
+		// 		{User: interaction.user.id},
 		// 		{
 		// 			$inc: {
 		// 				Wallet: allNumber
@@ -77,7 +77,7 @@ module.exports = {
 			if(data.Wallet < parseInt(converted) || converted === Infinity) return interaction.reply({content: "Kangel doesn't have money in her wallet, should probably make Kangel stream or something", ephemeral: true})
 
 			await accountSchema.findOneAndUpdate(
-				{Guild: interaction.guild.id, User: interaction.user.id},
+				{User: interaction.user.id},
 				{
 					$inc: {
 						Wallet: - value
@@ -93,7 +93,7 @@ module.exports = {
 			if(data.Wallet < parseInt(converted) || converted === Infinity) return interaction.reply({content: "Kangel doesn't have money in her wallet, should probably make Kangel stream or something", ephemeral: true})
 
 			await accountSchema.findOneAndUpdate(
-				{Guild: interaction.guild.id, User: interaction.user.id},
+				{User: interaction.user.id},
 				{
 					$inc: {
 						Wallet: + value
@@ -109,7 +109,7 @@ module.exports = {
 			if(data.Wallet < parseInt(converted) || converted === Infinity) return interaction.reply({content: "Kangel doesn't have money in her wallet, should probably make Kangel stream or something", ephemeral: true})
 
 			await accountSchema.findOneAndUpdate(
-				{Guild: interaction.guild.id, User: interaction.user.id},
+				{User: interaction.user.id},
 				{
 					$inc: {
 						Wallet: - value
@@ -125,7 +125,7 @@ module.exports = {
 			if(data.Wallet < parseInt(converted) || converted === Infinity) return interaction.reply({content: "Kangel doesn't have money in her wallet, should probably make Kangel stream or something", ephemeral: true})
 
 			await accountSchema.findOneAndUpdate(
-				{Guild: interaction.guild.id, User: player},
+				{User: player},
 				{
 					$inc: {
 						Wallet: - value
@@ -134,7 +134,7 @@ module.exports = {
 			)
 
 			await accountSchema.findOneAndUpdate(
-				{Guild: interaction.guild.id, User: player2},
+				{User: player2},
 				{
 					$inc: {
 						Wallet: - value
@@ -150,7 +150,7 @@ module.exports = {
 			if(data.Wallet < parseInt(converted) || converted === Infinity) return interaction.reply({content: "Kangel doesn't have money in her wallet, should probably make Kangel stream or something", ephemeral: true})
 
 			await accountSchema.findOneAndUpdate(
-				{Guild: interaction.guild.id, User: player},
+				{User: player},
 				{
 					$inc: {
 						Wallet: + value
@@ -159,7 +159,7 @@ module.exports = {
 			)
 
 			await accountSchema.findOneAndUpdate(
-				{Guild: interaction.guild.id, User: player},
+				{User: player},
 				{
 					$inc: {
 						Wallet: - value

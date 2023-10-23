@@ -58,7 +58,7 @@ module.exports = {
         const nf = new Intl.NumberFormat('en-US');
 
         const { options, user, guild } = interaction;
-        let data = await accountSchema.findOne({Guild: interaction.guild.id, User: interaction.user.id}).catch(err => {})
+        let data = await accountSchema.findOne({User: interaction.user.id}).catch(err => {})
         const randomStress = Math.floor(Math.random() * (stressMax - stressMin + 1) + stressMin);
         const randomMental = Math.floor(Math.random() * (mentalMax - mentalMin + 1) + mentalMin);
         const randomAffection = Math.floor(Math.random() * (affectionMax - affectionMin + 1) + affectionMin);
@@ -69,9 +69,9 @@ module.exports = {
             case "sillies": {
                 if(data) {
                     if(data.DailyActivityCount > 0) {
-                        checkDailies(interaction, interaction.guild.id, interaction.user.id, -3)
+                        checkDailies(interaction, interaction.user.id, -3)
                     } else if (data.DailyActivityCount === 0 || data.DailyActivityCount < 0) {
-                        return checkDailies(interaction, interaction.guild.id, interaction.user.id, -3)
+                        return checkDailies(interaction, interaction.user.id, -3)
                     }
         
                     let embed = new EmbedBuilder()
@@ -80,7 +80,7 @@ module.exports = {
         
                     try {
                         await accountSchema.findOneAndUpdate(
-                            {Guild: interaction.guild.id, User: interaction.user.id},
+                            { User: interaction.user.id},
                             {
                                 $inc: {
                                     DailyActivityCount: -3,
@@ -114,9 +114,9 @@ module.exports = {
             case "medications": {
                 if(data) {
                     if(data.DailyActivityCount > 0) {
-                        checkDailies(interaction, interaction.guild.id, interaction.user.id, -3)
+                        checkDailies(interaction, interaction.user.id, -3)
                     } else if (data.DailyActivityCount === 0) {
-                        return checkDailies(interaction, interaction.guild.id, interaction.user.id, -3)
+                        return checkDailies(interaction, interaction.user.id, -3)
                     }
         
                     switch(options.getString("give")) {
@@ -127,7 +127,7 @@ module.exports = {
                 
                             try {
                                 await accountSchema.findOneAndUpdate(
-                                    {Guild: interaction.guild.id, User: interaction.user.id},
+                                    {User: interaction.user.id},
                                     {
                                         $inc: {
                                             DailyActivityCount: -3,
@@ -160,7 +160,7 @@ module.exports = {
                 
                             try {
                                 await accountSchema.findOneAndUpdate(
-                                    {Guild: interaction.guild.id, User: interaction.user.id},
+                                    {User: interaction.user.id},
                                     {
                                         $inc: {
                                             DailyActivityCount: -3,
@@ -202,9 +202,9 @@ module.exports = {
                     }
         
                     if(data.DailyActivityCount > 0) {
-                        checkDailies(interaction, interaction.guild.id, interaction.user.id, -4)
+                        checkDailies(interaction, interaction.user.id, -4)
                     } else if (data.DailyActivityCount === 0) {
-                        return checkDailies(interaction, interaction.guild.id, interaction.user.id, -4)
+                        return checkDailies(interaction, interaction.user.id, -4)
                     }
                     
                     const randomFollower = Math.floor(Math.random() * (dailyMax - dailyMin + 1) + dailyMin);
@@ -217,7 +217,7 @@ module.exports = {
                     async function dailyStreamDB(stressTimes, affectionTimes, mentalTimes, followerTimes, walletTimes) {
                         try {
                             await accountSchema.findOneAndUpdate(
-                                {Guild: interaction.guild.id, User: interaction.user.id},
+                                {User: interaction.user.id},
                                 {
                                     $set: {
                                         LastDaily: Date.now(),
@@ -305,9 +305,9 @@ module.exports = {
             case "internet": {
                 if(data) {
                     if(data.DailyActivityCount > 0) {
-                        checkDailies(interaction, interaction.guild.id, interaction.user.id, -1)
+                        checkDailies(interaction, interaction.user.id, -1)
                     } else if (data.DailyActivityCount === 0) {
-                        return checkDailies(interaction, interaction.guild.id, interaction.user.id, -1)
+                        return checkDailies(interaction, interaction.user.id, -1)
                     }
         
                     switch(options.getString("where")) {
@@ -318,7 +318,7 @@ module.exports = {
                 
                             try {
                                 await accountSchema.findOneAndUpdate(
-                                    {Guild: interaction.guild.id, User: interaction.user.id},
+                                    { User: interaction.user.id},
                                     {
                                         $inc: {
                                             DailyActivityCount: -1,

@@ -1,15 +1,15 @@
 const accountSchema = require("../Schemas.js/account")
 const parseMs = require("parse-ms-2")
 
-async function claimDailies(message, guild, user) {
-    let data = await accountSchema.findOne({Guild: guild, User: user}).catch(err => {})
+async function claimDailies(message, user) {
+    let data = await accountSchema.findOne({ User: user}).catch(err => {})
     let activityCooldown = 86400000;
     let activityTimeLeft = activityCooldown - (Date.now() - data.LastActivity);
 
     if(activityTimeLeft < 0) {
         try {
             await accountSchema.findOneAndUpdate(
-                {Guild: guild, User: user},
+                {User: user},
                 {
                     $set: {
                         DailyActivityCount: 10

@@ -16,7 +16,7 @@ module.exports = {
 
         const value = options.getString("amount")
 
-        let data = await accountSchema.findOne({ Guild: interaction.guild.id, User: user.id}).catch(err => { })
+        let data = await accountSchema.findOne({ User: user.id}).catch(err => { })
         if(!data) return interaction.reply({content: "You haven't set Kangel a streamer account, yet.", ephemeral: true})
 
         if(value.toLowerCase() === "all") {

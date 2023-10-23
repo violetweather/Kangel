@@ -3,7 +3,7 @@ const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, 
 const items = require("../utilities/items.json")
 
 async function gachaPull(message, bannerPick, pullPick) {
-    let data = await accountSchema.findOne({Guild: message.guild.id, User: message.user.id}).catch(err => {})
+    let data = await accountSchema.findOne({User: message.user.id}).catch(err => {})
     
     if(bannerPick === "featured") {     
         function weightedSample(pairs) {
@@ -40,7 +40,7 @@ async function gachaPull(message, bannerPick, pullPick) {
             async function dbPUSH(definedItem) {
                 try {
                     await accountSchema.findOneAndUpdate(
-                        {Guild: message.guild.id, User: message.user.id},
+                        {User: message.user.id},
                         {
                             $inc: {
                                 Crystal: -10
@@ -52,7 +52,7 @@ async function gachaPull(message, bannerPick, pullPick) {
                 }
     
                 try {
-                    await accountSchema.findOneAndUpdate({Guild: message.guild.id, User: message.user.id}, { $push: { Items: {
+                    await accountSchema.findOneAndUpdate({User: message.user.id}, { $push: { Items: {
                         ItemDate: Date.now(),
                         ItemRarity: definedItem.rarity,
                         ItemName: definedItem.name,
@@ -64,7 +64,7 @@ async function gachaPull(message, bannerPick, pullPick) {
                 }
     
                 try {
-                    await accountSchema.findOneAndUpdate({Guild: message.guild.id, User: message.user.id}, { $push: { Pulls: {
+                    await accountSchema.findOneAndUpdate({User: message.user.id}, { $push: { Pulls: {
                         ItemRecordDate: Date.now(),
                         ItemRecordRarity: definedItem.rarity,
                         ItemRecordName: definedItem.name,
@@ -146,7 +146,7 @@ async function gachaPull(message, bannerPick, pullPick) {
 
             async function dbPUSH(definedItem) {
                 try {
-                    await accountSchema.findOneAndUpdate({Guild: message.guild.id, User: message.user.id}, { $push: { Items: {
+                    await accountSchema.findOneAndUpdate({User: message.user.id}, { $push: { Items: {
                         ItemDate: Date.now(),
                         ItemRarity: definedItem.rarity,
                         ItemName: definedItem.name,
@@ -158,7 +158,7 @@ async function gachaPull(message, bannerPick, pullPick) {
                 }
     
                 try {
-                    await accountSchema.findOneAndUpdate({Guild: message.guild.id, User: message.user.id}, { $push: { Pulls: {
+                    await accountSchema.findOneAndUpdate({User: message.user.id}, { $push: { Pulls: {
                         ItemRecordDate: Date.now(),
                         ItemRecordRarity: definedItem.rarity,
                         ItemRecordName: definedItem.name,
@@ -235,7 +235,7 @@ async function gachaPull(message, bannerPick, pullPick) {
 
             try {
                 await accountSchema.findOneAndUpdate(
-                    {Guild: message.guild.id, User: message.user.id},
+                    {User: message.user.id},
                     {
                         $inc: {
                             Crystal: -80

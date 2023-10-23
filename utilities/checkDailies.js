@@ -1,8 +1,8 @@
 const accountSchema = require("../Schemas.js/account")
 const parseMs = require("parse-ms-2")
 
-async function checkDailies(message, guild, user, activityPoints) {
-    let data = await accountSchema.findOne({Guild: guild, User: user}).catch(err => {})
+async function checkDailies(message, user, activityPoints) {
+    let data = await accountSchema.findOne({ User: user}).catch(err => {})
     let activityCooldown = 86400000;
     let activityTimeLeft = activityCooldown - (Date.now() - data.LastActivity);
 
