@@ -52,24 +52,10 @@ module.exports = {
 		const value = options.getString("gamble")
 
 		if(!data) return interaction.reply({content: "Kangel doesn't have a streamer account.", ephemeral: true}) 
-		if(data.Wallet === 0) return interaction.reply({content: "Kangel is broke. No money for her to gamble away.", ephemeral: true})
 		const converted = Number(value)
 		if(isNaN(converted) === true) return interaction.reply({content: "The amount inputted isn't a number, silly", ephemeral: true})
 		if(data.Wallet < parseInt(converted) || converted === Infinity) return interaction.reply({content: "Kangel doesn't have money in her wallet, should probably make Kangel stream or something", ephemeral: true})
 		if(value < 0) return interaction.reply({content: "The amount inputted isn't a number, silly", ephemeral: true})
-
-		// async function gambleALL() {
-		// 	let allNumber = data.Wallet - data.Wallet
-		// 	await accountSchema.findOneAndUpdate(
-		// 		{User: interaction.user.id},
-		// 		{
-		// 			$inc: {
-		// 				Wallet: allNumber
-		// 			}
-		// 		}
-		// 	)
-		// 	return;
-		// }
 
 		async function gambleLoss() {
 			const converted = Number(value)
@@ -103,71 +89,6 @@ module.exports = {
 			return;
 		}
 
-		async function noGame(player, player2) {
-			const converted = Number(value)
-            if(isNaN(converted) === true) return interaction.reply({content: "The amount inputted isn't a number, silly", ephemeral: true})
-			if(data.Wallet < parseInt(converted) || converted === Infinity) return interaction.reply({content: "Kangel doesn't have money in her wallet, should probably make Kangel stream or something", ephemeral: true})
-
-			await accountSchema.findOneAndUpdate(
-				{User: interaction.user.id},
-				{
-					$inc: {
-						Wallet: - value
-					}
-				}
-			)
-			return;
-		}
-
-		async function TTTLoss(player, player2) {
-			const converted = Number(value)
-            if(isNaN(converted) === true) return interaction.reply({content: "The amount inputted isn't a number, silly", ephemeral: true})
-			if(data.Wallet < parseInt(converted) || converted === Infinity) return interaction.reply({content: "Kangel doesn't have money in her wallet, should probably make Kangel stream or something", ephemeral: true})
-
-			await accountSchema.findOneAndUpdate(
-				{User: player},
-				{
-					$inc: {
-						Wallet: - value
-					}
-				}
-			)
-
-			await accountSchema.findOneAndUpdate(
-				{User: player2},
-				{
-					$inc: {
-						Wallet: - value
-					}
-				}
-			)
-			return;
-		}
-
-		async function TTTWin(player) {
-			const converted = Number(value)
-            if(isNaN(converted) === true) return interaction.reply({content: "The amount inputted isn't a number, silly", ephemeral: true})
-			if(data.Wallet < parseInt(converted) || converted === Infinity) return interaction.reply({content: "Kangel doesn't have money in her wallet, should probably make Kangel stream or something", ephemeral: true})
-
-			await accountSchema.findOneAndUpdate(
-				{User: player},
-				{
-					$inc: {
-						Wallet: + value
-					}
-				}
-			)
-
-			await accountSchema.findOneAndUpdate(
-				{User: player},
-				{
-					$inc: {
-						Wallet: - value
-					}
-				}
-			)
-		}
-
 		switch(options.getSubcommand()) {
 			case "slots": {
 				const Game = new Slots({
@@ -181,6 +102,7 @@ module.exports = {
 				});
 
 				Game.startGame()
+
 				Game.on('gameOver', result => {
 					if(result.result === "lose") {
 						return gambleLoss()
@@ -208,10 +130,11 @@ module.exports = {
 					timeoutTime: 60000,
 					winMessage: `You won **¢${converted}**! The word was **{word}**`,
 					loseMessage: `You lost **¢${converted}**! The word was **{word}**.`,
-					playerOnlyMessage: 'Only {player} can use these buttons.'
+					playerOnlyMessage: 'Only {player} can use these buttons.',
 				});
 
 				Game.startGame();
+
 				Game.on('gameOver', result => {
 					if(result.result === "lose") {
 						return gambleLoss();
@@ -253,6 +176,7 @@ module.exports = {
 			}
 			break;
 			case "typing": {
+
 				let diff = interaction.options.getString("difficulty")
 				let difficultySetting = sentences[`${diff}`][Math.floor(Math.random() * sentences[`${diff}`].length)];
 
@@ -288,6 +212,7 @@ module.exports = {
 				}
 
 				if(diff === "medium") {
+
 					if(converted > 100) {
 						return interaction.reply({content: "The betting max is 100 coins for the medium difficulty!", ephemeral: true})
 					}
@@ -319,6 +244,7 @@ module.exports = {
 				}
 
 				if(diff === "easy") {
+
 					if(converted > 50) {
 						return interaction.reply({content: "The betting max is 50 coins for the easy difficulty!", ephemeral: true})
 					}

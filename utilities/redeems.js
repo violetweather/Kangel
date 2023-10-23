@@ -1,7 +1,10 @@
-[
+let codes = [
     {
-        "code": "NEWRELEASECODEMULTI",
-        "crystals_awarded": 0,
-        "coins_awarded": 0
+        "code": "WELCOME2GACHA",
+        "crystals_awarded": 20,
+        "coins_awarded": 150,
+        "expired": false
     }
 ]
+
+module.exports = codes;

@@ -15,8 +15,14 @@ let itemSchema = new Schema({
     ItemRarityStandard: String
 });
 
+let redeemSchema = new Schema({
+    RedeemCode: String,
+    RedeemDate: { type: Date, default: Date.now}
+})
+
 
 let accountSchema = new Schema({
+    Redeems: [redeemSchema],
     Perks: [Array],
     Pulls: [pullRecordSchema],
     Items: [itemSchema],

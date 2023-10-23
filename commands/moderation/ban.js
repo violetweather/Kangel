@@ -33,6 +33,10 @@ module.exports = {
         const bannedList = await interaction.guild.bans.fetch();
         let data = guildSetupSchema.findOne({ GuildID: interaction.guild.id })
 
+        if(!interaction.guild.members.me.permissions.has(Discord.PermissionFlagsBits.BanMembers)) {
+            return interaction.reply({content: "I have no permissions to ban members for you. :(", ephemeral: true})
+        }
+
         if(!data) {
             if(!member) {
 

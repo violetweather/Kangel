@@ -14,6 +14,10 @@ module.exports = {
         const member = interaction.options.getMember('target');
         const amount = interaction.options.getString('amount')
 
+        if(!interaction.guild.members.me.permissions.has(Discord.PermissionFlagsBits.ManageMessages)) {
+            return interaction.reply({content: "I have no permissions to delete messages for you. :(", ephemeral: true})
+        }
+
         const messages = await interaction.channel.messages.fetch({
             limit: amount+1,
         }).catch((error) => {
