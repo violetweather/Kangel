@@ -11,9 +11,9 @@ async function checkDailies(message, user, activityPoints) {
         return message.reply({content: `You've exhausted your daily activities with Kangel! Claim more using /kangel claim!`, ephemeral: true});
     }
 
-    if(data.DailyActivityCount+activityPoints < 0) {
-        return message.reply({content: "You don't have enough points for this activity!", ephemeral: true})
-    }
+    // if(data.DailyActivityCount+activityPoints < 0) {
+    //     return message.reply({content: "You don't have enough points for this activity!", ephemeral: true})
+    // }
 }
 
 module.exports = checkDailies;

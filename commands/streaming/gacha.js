@@ -89,12 +89,11 @@ module.exports = {
 
                 let embed = new EmbedBuilder()
                 .setColor("LuminousVividPink")
+                .setImage("https://i.imgur.com/sp5ToYY.png")
                 .addFields(
 					{ name: `**BETA** Featured 3★ Heavenly Gacha Banner`,
 						value: [
-                            `Banner is going away in **${days} days ${hours} hours and ${minutes} minutes.**\n`,
-                            `Featured Characters: 3★ <:eris:1164023601368932382> Eris and 3★ <:skye:1164145689203318804> Skye! \n`,
-							`Pull for a chance to get a 3★! \n - 1 pull = 10 <:8187:1163707516417486879> Angel Crystals | 10 pull = 80 <:8187:1163707516417486879> Angel Crystals [discount!])`,
+                            `Banner is going away in **${days} days ${hours} hours and ${minutes} minutes.**`,
                             `\n Characters & Items have a 0-3 star rating, with the most valuable being at 3 star, and the least at 0 star.`
 						].join("\n"),
 					},

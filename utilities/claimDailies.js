@@ -12,7 +12,8 @@ async function claimDailies(message, user) {
                 {User: user},
                 {
                     $set: {
-                        DailyActivityCount: 10
+                        DailyActivityCount: 10,
+                        LastActivity: Date.now()
                     }
                 }
             )

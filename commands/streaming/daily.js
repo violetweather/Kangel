@@ -65,13 +65,39 @@ module.exports = {
         const values = Object.values(streamComments)
         const randomValue = values[parseInt(Math.random() * values.length)]
 
+        async function crystalDrop(e) {
+            var d = Math.random();
+            // random drop!
+            if (d > 0.9) {
+                e.setFooter({text: "--> 2 Angel Crystals dropped from running this daily activity!"})
+            }
+
+                    
+            try {
+                await accountSchema.findOneAndUpdate(
+                    { User: interaction.user.id},
+                    {
+                        $inc: {
+                            Crystal: 2,
+                        }
+                    }
+                )
+            } catch(err) {
+                console.log(err);
+            }
+        }
+
         switch(options.getSubcommand()) {
             case "sillies": {
                 if(data) {
                     if(data.DailyActivityCount > 0) {
                         checkDailies(interaction, interaction.user.id, -3)
-                    } else if (data.DailyActivityCount === 0 || data.DailyActivityCount < 0) {
+                    } else if (data.DailyActivityCount === 0) {
                         return checkDailies(interaction, interaction.user.id, -3)
+                    }
+
+                    if(data.DailyActivityCount-3 < 0) {
+                        return interaction.reply({content: "You don't have enough points for this activity!", ephemeral: true})
                     }
         
                     let embed = new EmbedBuilder()
@@ -104,6 +130,8 @@ module.exports = {
                             inline: true
                         },
                     )
+
+                    await crystalDrop(embed)
         
                     return interaction.reply({embeds: [embed]})
                 } else {
@@ -117,6 +145,10 @@ module.exports = {
                         checkDailies(interaction, interaction.user.id, -3)
                     } else if (data.DailyActivityCount === 0) {
                         return checkDailies(interaction, interaction.user.id, -3)
+                    }
+
+                    if(data.DailyActivityCount-3 < 0) {
+                        return interaction.reply({content: "You don't have enough points for this activity!", ephemeral: true})
                     }
         
                     switch(options.getString("give")) {
@@ -149,6 +181,8 @@ module.exports = {
                                     inline: true
                                 },
                             )
+
+                            await crystalDrop(embed)
                 
                             return interaction.reply({embeds: [embed]})
                         }
@@ -182,6 +216,8 @@ module.exports = {
                                     inline: true
                                 },
                             )
+
+                            await crystalDrop(embed)
                 
                             return interaction.reply({embeds: [embed]})
                         }
@@ -205,6 +241,10 @@ module.exports = {
                         checkDailies(interaction, interaction.user.id, -4)
                     } else if (data.DailyActivityCount === 0) {
                         return checkDailies(interaction, interaction.user.id, -4)
+                    }
+
+                    if(data.DailyActivityCount-4 < 0) {
+                        return interaction.reply({content: "You don't have enough points for this activity!", ephemeral: true})
                     }
                     
                     const randomFollower = Math.floor(Math.random() * (dailyMax - dailyMin + 1) + dailyMin);
@@ -256,6 +296,8 @@ module.exports = {
                                 inline: true
                             },
                         )
+
+                        await crystalDrop(embed)
         
                         return interaction.reply({embeds: [embed]})
                     }
@@ -275,6 +317,8 @@ module.exports = {
                                 inline: true
                             },
                         )
+
+                        await crystalDrop(embed)
         
                         return interaction.reply({embeds: [embed]})
                     }
@@ -294,6 +338,8 @@ module.exports = {
                                 inline: true
                             },
                         )
+
+                        await crystalDrop(embed)
         
                         return interaction.reply({embeds: [embed]})
                     }
@@ -308,6 +354,10 @@ module.exports = {
                         checkDailies(interaction, interaction.user.id, -1)
                     } else if (data.DailyActivityCount === 0) {
                         return checkDailies(interaction, interaction.user.id, -1)
+                    }
+
+                    if(data.DailyActivityCount-1 < 0) {
+                        return interaction.reply({content: "You don't have enough points for this activity!", ephemeral: true})
                     }
         
                     switch(options.getString("where")) {
@@ -342,6 +392,8 @@ module.exports = {
                                     inline: true
                                 },
                             )
+
+                            await crystalDrop(embed)
         
                             return interaction.reply({embeds: [embed]})
                         }
