@@ -50,7 +50,7 @@ module.exports = {
                 .setURL(userInfo.url)
                 .setThumbnail(userInfo.image[1]["#text"])
                 .addFields(
-                    { name: `${userInfo.name}'s lastfm user profile.`,
+                    { name: `[${userInfo.name}](https://www.last.fm/user/${userInfo.name})'s lastfm user profile.`,
                         value: [
                             `**🎵 Tracks Scrobbled**: ${nf.format(userInfo.playcount)}`,
                             `**👤 Unique Artists**: ${nf.format(userInfo.artist_count)}`,
