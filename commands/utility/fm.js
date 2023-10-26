@@ -47,10 +47,11 @@ module.exports = {
     
                 let embed = new EmbedBuilder()
                 .setColor("LuminousVividPink")
+                .setTitle(`${userInfo.name}'s lastfm user profile.`)
                 .setURL(userInfo.url)
                 .setThumbnail(userInfo.image[1]["#text"])
                 .addFields(
-                    { name: `${userInfo.name}'s lastfm user profile.`,
+                    { name: `General Information`,
                         value: [
                             `**🎵 Tracks Scrobbled**: ${nf.format(userInfo.playcount)}`,
                             `**👤 Unique Artists**: ${nf.format(userInfo.artist_count)}`,
