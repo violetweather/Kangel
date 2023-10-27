@@ -1,6 +1,6 @@
-const accountSchema = require("../Schemas.js/account")
+const accountSchema = require("../../Schemas.js/account")
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, PermissionFlagsBits } = require('discord.js');
-const items = require("../utilities/items.json")
+const items = require("../kangel/items.json")
 
 async function gachaPull(message, bannerPick, pullPick) {
     let data = await accountSchema.findOne({User: message.user.id}).catch(err => {})

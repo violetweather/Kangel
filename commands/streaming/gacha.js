@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, PermissionFlagsBits } = require('discord.js');
 const accountSchema = require("../../Schemas.js/account")
 const Banner = require("../../Schemas.js/banners")
-const gachaPull = require("../../utilities/gachaPullRate")
+const gachaPull = require("../../utilities/functions/gachaPullRate")
 const parseMs = require("parse-ms-2")
 
 module.exports = {

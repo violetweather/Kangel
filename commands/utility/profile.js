@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js');
-const { loadImage, drawImage, createCanvas, registerFont } = require('canvas')
+const { loadImage, drawImage, createCanvas, registerFont, Image } = require('canvas')
 const ReviewedUser = require('../../Schemas.js/rateSchema')
+const fs = require("fs");
 
 module.exports = {
     category: "utility",
@@ -8,9 +9,9 @@ module.exports = {
 		.setName('profile')
 		.setDescription('See your Kangel profile!'),
     async execute(interaction) {
-        let profileURL = "https://i.imgur.com/gasv0Tf.png"
-        registerFont("./utilities/VCR.ttf", { family: "VCR OSD Mono"});
-        registerFont("./utilities/Arame.ttf", { family: "Arame"});
+        let profileURL = "./utilities/images/profileImage.png"
+        registerFont("./utilities/fonts/VCR.ttf", { family: "VCR OSD Mono"});
+        registerFont("./utilities/fonts/Arame.ttf", { family: "Arame"});
         let img = await loadImage(profileURL)
         let canvas = createCanvas(600, 365)
         let ctx = canvas.getContext('2d');

@@ -1,7 +1,7 @@
 
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, PermissionFlagsBits } = require('discord.js');
 const accountSchema = require("../../Schemas.js/account")
-const claimDailies = require("../../utilities/claimDailies")
+const claimDailies = require("../../utilities/functions/claimDailies")
 
 module.exports = {
 	category: 'streaming',

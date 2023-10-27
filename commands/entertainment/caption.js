@@ -21,7 +21,7 @@ module.exports = {
             return interaction.reply({content: "Invalid media type.", ephemeral: true})
         }
 
-        registerFont("./utilities/impact.ttf", { family: "Impact"});
+        registerFont("./utilities/fonts/impact.ttf", { family: "Impact"});
         let img = await loadImage(userAttachmentURL)
         let canvas = createCanvas(1280, 720)
         let ctx = canvas.getContext('2d');

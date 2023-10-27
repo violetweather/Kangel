@@ -1,4 +1,4 @@
-const accountSchema = require("../Schemas.js/account")
+const accountSchema = require("../../Schemas.js/account")
 const parseMs = require("parse-ms-2")
 
 async function claimDailies(message, user) {

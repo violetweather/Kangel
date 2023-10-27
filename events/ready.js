@@ -1,4 +1,4 @@
-const { Events } = require('discord.js');
+const { Events, ActivityType } = require('discord.js');
 const mongoose = require('mongoose');
 const mongodbURL = process.env.MONGODB_URL;
 const logger = require('../logger');
@@ -10,8 +10,11 @@ module.exports = {
 	name: Events.ClientReady,
 	once: true,
 	async execute(kangel) {
-		console.log(`${kangel.user.tag} is ready.`);
-
+		kangel.user.setActivity({
+			name: "♡ with you!",
+			type: ActivityType.Streaming,
+			url: "https://www.youtube.com/watch?v=6araOMWo4tc"
+		})
 		if (mongodbURL) {
 			await mongoose.connect(mongodbURL || '', {
 				keepAlive: true,
@@ -21,7 +24,7 @@ module.exports = {
 		}
 
 		if (mongoose.connect) {
-			logger.info("Database is running.")
+			logger.info("MongoDB is running.")
 		}
 	},
 };

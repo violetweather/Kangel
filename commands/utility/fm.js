@@ -10,12 +10,12 @@ module.exports = {
 			subcommand
 				.setName('info')
 				.setDescription('Info about a lastfm user')
-				.addStringOption(option => option.setName('target').setDescription('The target user').setRequired(true))),
-        // .addSubcommand(subcommand =>
-        //     subcommand
-        //         .setName('chart')
-        //         .setDescription('Get weekly artist chart')
-        //         .addStringOption(option => option.setName('target').setDescription('The target user').setRequired(true)))
+				.addStringOption(option => option.setName('target').setDescription('The target user').setRequired(true)))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('np')
+                .setDescription('Now playing on your lastfm!')
+                .addStringOption(option => option.setName('target').setDescription('The target user').setRequired(true))),
         // .addSubcommand(subcommand =>
         //     subcommand
         //         .setName('top')
@@ -37,13 +37,7 @@ module.exports = {
                     user: userInput,
                 }
 
-                let recentTracksParams = {
-                    user: userInput,
-                    limit: 5
-                }
-
                 let userInfo = await lfm.user_getInfo(infoParams)
-                let userRecent = await lfm.user_getRecentTracks(recentTracksParams)
     
                 let embed = new EmbedBuilder()
                 .setColor("LuminousVividPink")
@@ -62,7 +56,33 @@ module.exports = {
                     },
                 )
 
+                return interaction.reply({embeds:[embed]});
+            } catch(err) {
+                interaction.reply({content: "There was an error while trying to find the user's information.", ephemeral: true})
+                return console.log(err);
+            }
+        }
+
+        if(interaction.options.getSubcommand() === "np") {
+            try {
+                let recentTracksParams = {
+                    user: userInput,
+                    limit: 5
+                }
+
+                let infoParams = {
+                    user: userInput,
+                }
+
+                let userInfo = await lfm.user_getInfo(infoParams)
+    
+                let userRecent = await lfm.user_getRecentTracks(recentTracksParams)
+
                 if(userRecent) {
+                    let embed = new EmbedBuilder()
+                    .setTitle(`${userInfo.name}'s lastfm user profile.`)
+                    .setURL(userInfo.url)
+                    .setColor("DarkVividPink")
                     let lastListen = userRecent.track[0] || "N/A"
                     embed.addFields(
                         { name: `Last Played`,
@@ -74,9 +94,8 @@ module.exports = {
                         },
                     )
                     embed.setImage(lastListen.image[2]["#text"])
+                    return interaction.reply({embeds:[embed]});
                 }
-
-                return interaction.reply({embeds:[embed]});
             } catch(err) {
                 interaction.reply({content: "There was an error while trying to find the user's information.", ephemeral: true})
                 return console.log(err);

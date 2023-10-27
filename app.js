@@ -4,6 +4,31 @@ const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const logger = require('./logger');
 const kangel = new Client({ intents: [Object.keys(GatewayIntentBits)] });
+const { VoteClient, VoteClientEvents } = require("topgg-votes");
+const kangelAccountDB = require("./Schemas.js/account")
+
+const votesClient = new VoteClient({
+    token: process.env.TOPGG_TOKEN
+})
+
+votesClient.on(VoteClientEvents.BotVote, ({ userId }) => {
+	let data = kangelAccountDB.findOne({User: userId}).catch(err => {})
+    if(data) {
+		try {
+			kangelAccountDB.findOneAndUpdate(
+				{ User: userId},
+				{
+					$inc: {
+						Crystal: 2,
+						Wallet: 35
+					}
+				}
+			)
+		} catch(err) {
+			console.log(err);
+		}
+	}
+})
 
 kangel.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
@@ -174,6 +199,26 @@ kangel.on(Events.InteractionCreate, async interaction => {
 		.addFields({ name: "Dislike", value: `**${dislikers.join(', ').slice(0, 1020) || "No one disliked this poll."}**`, inline: true})
 
 		await interaction.reply({embeds: [embed], ephemeral: true});
+	}
+})
+
+kangel.on(Events.InteractionCreate, async interaction => {
+	if(interaction.isAutocomplete()) {
+		const command = interaction.client.commands.get(interaction.commandName);
+
+		if (!command) {
+			return;
+		}
+
+		if(command.owner) {
+			if(interaction.user.id !== "785682850274869308") return await interaction.reply({content: "You are not authorized to run this command.", ephemeral: true})
+		}
+
+		try {
+			await command.autocomplete(interaction)
+		} catch (err) {
+			return;
+		}
 	}
 })
 

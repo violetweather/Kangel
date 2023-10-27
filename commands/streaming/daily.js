@@ -1,12 +1,12 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, PermissionFlagsBits } = require('discord.js');
 const accountSchema = require("../../Schemas.js/account")
 const parseMs = require("parse-ms-2")
-const { dailyMin, dailyMax } = require("../../utilities/daily.json")
-const { stressMin, stressMax } = require("../../utilities/stressStat.json")
-const { affectionMin, affectionMax } = require("../../utilities/affectionStat.json")
-const { mentalMin, mentalMax } = require("../../utilities/mentalStat.json")
-const checkDailies = require("../../utilities/checkDailies")
-const streamComments = require("../../utilities/streamComments.json")
+const { dailyMin, dailyMax } = require("../../utilities/kangel/daily.json")
+const { stressMin, stressMax } = require("../../utilities/kangel/stressStat.json")
+const { affectionMin, affectionMax } = require("../../utilities/kangel/affectionStat.json")
+const { mentalMin, mentalMax } = require("../../utilities/kangel/mentalStat.json")
+const checkDailies = require("../../utilities/functions/checkDailies")
+const streamComments = require("../../utilities/kangel/streamComments.json")
 
 module.exports = {
 	category: 'streaming',

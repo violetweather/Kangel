@@ -1,7 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, PermissionFlagsBits } = require('discord.js');
 const { Slots, Wordle, Minesweeper, FastType } = require('discord-gamecord');
 const accountSchema = require("../../Schemas.js/account")
-const sentences = require("../../utilities/typingSentences.json")
+const sentences = require("../../utilities/kangel/typingSentences.json")
 
 module.exports = {
 	category: 'streaming',
