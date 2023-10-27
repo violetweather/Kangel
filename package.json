@@ -4,7 +4,6 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "postinstall": "npx patch-package discord-gamecord",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
     "dev": "node . | pino-pretty -i pid,hostname -t 'yyyy-mm-dd HH:MM:ss'",
