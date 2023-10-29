@@ -18,7 +18,7 @@ module.exports = {
 
         interaction.reply({content: "KangelGPT is working, please wait."})
 
-        const browser = await puppy.launch({ headless: "new" }) // >_<
+        const browser = await puppy.launch({ headless: true }) // >_<
         const page = await browser.newPage();
 
         await page.goto("https://chat-app-f2d296.zapier.app/");
