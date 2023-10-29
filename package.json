@@ -30,6 +30,7 @@
     "nanoid": "^3.3.6",
     "parse-ms-2": "^1.0.0",
     "pino": "^7.0.0-rc.9",
+    "puppeteer": "^21.4.1",
     "topgg-votes": "^2.2.1",
     "vandal.js": "^1.2.0"
   },

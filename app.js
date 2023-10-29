@@ -1,7 +1,7 @@
 require('dotenv').config()
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { Client, Collection, Events, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, InteractionType } = require('discord.js');
 const logger = require('./logger');
 const kangel = new Client({ intents: [Object.keys(GatewayIntentBits)] });
 const { VoteClient, VoteClientEvents } = require("topgg-votes");
