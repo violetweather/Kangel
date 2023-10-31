@@ -6,9 +6,16 @@ const logger = require('./logger');
 const kangel = new Client({ intents: [Object.keys(GatewayIntentBits)] });
 const { VoteClient, VoteClientEvents } = require("topgg-votes");
 const kangelAccountDB = require("./Schemas.js/account")
+const { AutoPoster } = require('@superchupu/topgg-autoposter')
+const poster = AutoPoster(process.env.TOPGG_TOKEN, kangel)
 
 const votesClient = new VoteClient({
-    token: process.env.TOPGG_TOKEN
+    token: process.env.TOPGG_TOKEN,
+	webhook: {
+		port: 22565,
+		path: "/dblwebhook",
+		authorization: "P8JYTyqhw6PE^%"
+	}
 })
 
 votesClient.on(VoteClientEvents.BotVote, ({ userId }) => {

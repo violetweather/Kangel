@@ -34,8 +34,12 @@ module.exports = {
         });
 
         async function newTranslate() {
-            const [translation] = await translate.translate(input, langMatch[0].code);
-            return translation;
+            try {
+                const [translation] = await translate.translate(input, langMatch[0].code);
+                return translation;
+            } catch(err) {
+                return interaction.reply({ content: "There was an error translating your message.", ephemeral: true})
+            }
         }
         
         let translateFunction = await newTranslate()
@@ -46,7 +50,6 @@ module.exports = {
             { name: `🌐 Translate command prompt`,
                 value: [
                     `**From**: ${input}`,
-                    `**Detected Language**: *${langMatch[0].language}*`,
                     `**To**: ${decodeURIComponent(translateFunction)}`,
                 ].join("\n"),
             },
