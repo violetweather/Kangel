@@ -1,0 +1,8 @@
+{
+    "affectionMin": 1,
+    "affectionMax": 3,
+    "mentalMin": 1,
+    "mentalMax": 4,
+    "stressMin": 2,
+    "stressMax": 4
+}

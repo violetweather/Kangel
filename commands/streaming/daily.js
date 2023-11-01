@@ -2,9 +2,9 @@ const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, 
 const accountSchema = require("../../Schemas.js/account")
 const parseMs = require("parse-ms-2")
 const { dailyMin, dailyMax } = require("../../utilities/kangel/daily.json")
-const { stressMin, stressMax } = require("../../utilities/kangel/stressStat.json")
-const { affectionMin, affectionMax } = require("../../utilities/kangel/affectionStat.json")
-const { mentalMin, mentalMax } = require("../../utilities/kangel/mentalStat.json")
+const { stressMin, stressMax } = require("../../utilities/kangel/statChances.json")
+const { affectionMin, affectionMax } = require("../../utilities/kangel/statChances.json")
+const { mentalMin, mentalMax } = require("../../utilities/kangel/statChances.json")
 const checkDailies = require("../../utilities/functions/checkDailies")
 const streamComments = require("../../utilities/kangel/streamComments.json")
 
@@ -69,7 +69,7 @@ module.exports = {
             var d = Math.random();
             // random drop!
             if (d > 0.9) {
-                e.setFooter({text: "--> 2 Angel Crystals dropped from running this daily activity!"})
+                e.setFooter({text: "Rare 2 Angel Crystals dropped from running this daily activity!"})
             }
 
                     
@@ -86,6 +86,8 @@ module.exports = {
                 console.log(err);
             }
         }
+
+        
 
         switch(options.getSubcommand()) {
             case "sillies": {
