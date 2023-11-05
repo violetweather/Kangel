@@ -6,36 +6,36 @@ const logger = require('./logger');
 const kangel = new Client({ intents: [Object.keys(GatewayIntentBits)] });
 const { VoteClient, VoteClientEvents } = require("topgg-votes");
 const kangelAccountDB = require("./Schemas.js/account")
-// const { AutoPoster } = require('@superchupu/topgg-autoposter')
-// const poster = AutoPoster(process.env.TOPGG_TOKEN, kangel)
+const { AutoPoster } = require('@superchupu/topgg-autoposter')
+const poster = AutoPoster(process.env.TOPGG_TOKEN, kangel)
 
-// const votesClient = new VoteClient({
-//     token: process.env.TOPGG_TOKEN,
-// 	webhook: {
-// 		port: 22565,
-// 		path: "/dblwebhook",
-// 		authorization: "P8JYTyqhw6PE^%"
-// 	}
-// })
+const votesClient = new VoteClient({
+    token: process.env.TOPGG_TOKEN,
+	webhook: {
+		port: 22565,
+		path: "/dblwebhook",
+		authorization: "P8JYTyqhw6PE^%"
+	}
+})
 
-// votesClient.on(VoteClientEvents.BotVote, ({ userId }) => {
-// 	let data = kangelAccountDB.findOne({User: userId}).catch(err => {})
-//     if(data) {
-// 		try {
-// 			kangelAccountDB.findOneAndUpdate(
-// 				{ User: userId},
-// 				{
-// 					$inc: {
-// 						Crystal: 2,
-// 						Wallet: 35
-// 					}
-// 				}
-// 			)
-// 		} catch(err) {
-// 			console.log(err);
-// 		}
-// 	}
-// })
+votesClient.on(VoteClientEvents.BotVote, ({ userId }) => {
+	let data = kangelAccountDB.findOne({User: userId}).catch(err => {})
+    if(data) {
+		try {
+			kangelAccountDB.findOneAndUpdate(
+				{ User: userId},
+				{
+					$inc: {
+						Crystal: 2,
+						Wallet: 35
+					}
+				}
+			)
+		} catch(err) {
+			console.log(err);
+		}
+	}
+})
 
 kangel.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
