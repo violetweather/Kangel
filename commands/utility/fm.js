@@ -23,10 +23,6 @@ module.exports = {
                 .setName('top')
                 .setDescription('Get top tracks for user')
                 .addStringOption(option => option.setName('target').setDescription('The target user').setRequired(true))),
-        // .addSubcommand(subcommand =>
-        //     subcommand
-        //         .setName('link')
-        //         .setDescription('Authenticate your lastfm account with Kangel!')),
     async execute(interaction) {
         let userInput = interaction.options.getString("target")
         const nf = new Intl.NumberFormat('en-US');
