@@ -2,6 +2,7 @@ const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField }
 const User = require('../../Schemas.js/rateSchema')
 const logger = require('../../logger');
 const Server = require('../../Schemas.js/guildRateSchema')
+const {pagination, ButtonTypes, ButtonStyles} = require('@devraelfreeze/discordjs-pagination');
 
 module.exports = {
 	category: 'utility',
@@ -29,17 +30,45 @@ module.exports = {
 
             if(user) {
                 let reviews = [];
+                let embeds = [];
+
                 await user.Ratings.forEach(async ratings => {
                     reviews.push(`**Review Author**: ${ratings.Author} \n **Review ID**: ${ratings._id} \n **Review Rating**: ★${ratings.StarRating} \n **Review Comment**: ${ratings.Comment}`)
                 });
 
-                const embed = new EmbedBuilder()
-                .setColor("LuminousVividPink")
-                .setTimestamp()
-                .setTitle(`Reviews for ${mention.username}`)
-                .setDescription(reviews.join('\n \n').slice(0, 2000))
-        
-                await interaction.reply({embeds: [embed]});
+
+                for (let i = 0; i <= reviews.length-1; i++) {
+                    let embed = new EmbedBuilder()
+                    embed.setColor("LuminousVividPink")
+                    embed.setTimestamp()
+                    embed.setTitle(`Reviews for ${mention.username}`)
+                    embed.setDescription(`${reviews[i]}`)
+
+                    embeds.push(embed)
+                }
+
+                await pagination({
+                    embeds: embeds, /** Array of embeds objects */
+                    author: interaction.member.user,
+                    interaction: interaction,
+                    ephemeral: false,
+                    time: 40000, /** 20 seconds */
+                    disableButtons: true, /** Remove buttons after timeout */
+                    fastSkip: false,
+                    pageTravel: false,
+                    buttons: [
+                        {
+                            type: ButtonTypes.previous,
+                            label: 'Previous Page',
+                            style: ButtonStyles.Primary
+                        },
+                        {
+                            type: ButtonTypes.next,
+                            label: 'Next Page',
+                            style: ButtonStyles.Success
+                        }
+                    ]
+                });
             } else {
                 let embed = new EmbedBuilder()
                 .setDescription("No reviews found for the user.")
@@ -55,18 +84,44 @@ module.exports = {
             })
 
             if(server) {
+                let embeds = [];
                 let reviews = [];
                 await server.Ratings.forEach(async ratings => {
                     reviews.push(`**Review Author**: ${ratings.Author} \n **Review ID**: ${ratings._id} \n **Review Rating**: ★${ratings.StarRating} \n **Review Comment**: ${ratings.Comment}`)
                 });
 
-                const embed = new EmbedBuilder()
-                .setColor("LuminousVividPink")
-                .setTimestamp()
-                .setTitle(`Reviews for ${interaction.guild.name}`)
-                .setDescription(reviews.join('\n \n').slice(0, 2000))
-        
-                await interaction.reply({embeds: [embed]});
+                for (let i = 0; i <= reviews.length-1; i++) {
+                    let embed = new EmbedBuilder()
+                    .setColor("LuminousVividPink")
+                    .setTimestamp()
+                    .setTitle(`Reviews for ${interaction.guild.name}`)
+                    .setDescription(`${reviews[i]}`)
+
+                    embeds.push(embed)
+                }
+
+                await pagination({
+                    embeds: embeds, /** Array of embeds objects */
+                    author: interaction.member.user,
+                    interaction: interaction,
+                    ephemeral: false,
+                    time: 40000, /** 20 seconds */
+                    disableButtons: true, /** Remove buttons after timeout */
+                    fastSkip: false,
+                    pageTravel: false,
+                    buttons: [
+                        {
+                            type: ButtonTypes.previous,
+                            label: 'Previous Page',
+                            style: ButtonStyles.Primary
+                        },
+                        {
+                            type: ButtonTypes.next,
+                            label: 'Next Page',
+                            style: ButtonStyles.Success
+                        }
+                    ]
+                });
             } else {
                 let embed = new EmbedBuilder()
                 .setDescription("No reviews found for the server.")

@@ -1,5 +1,7 @@
 const { SlashCommandBuilder, EmbedBuilder, Client, italic, PermissionsBitField, ChannelType } = require('discord.js');
 const lastfm = require("lastfm-njs")
+const axios = require('axios');
+const {pagination, ButtonTypes, ButtonStyles} = require('@devraelfreeze/discordjs-pagination');
 
 module.exports = {
 	category: 'utility',
@@ -15,12 +17,16 @@ module.exports = {
             subcommand
                 .setName('np')
                 .setDescription('Now playing on your lastfm!')
+                .addStringOption(option => option.setName('target').setDescription('The target user').setRequired(true)))
+        .addSubcommand(subcommand =>
+            subcommand
+                .setName('top')
+                .setDescription('Get top tracks for user')
                 .addStringOption(option => option.setName('target').setDescription('The target user').setRequired(true))),
         // .addSubcommand(subcommand =>
         //     subcommand
-        //         .setName('top')
-        //         .setDescription('Get top tracks for user')
-        //         .addStringOption(option => option.setName('target').setDescription('The target user').setRequired(true))),
+        //         .setName('link')
+        //         .setDescription('Authenticate your lastfm account with Kangel!')),
     async execute(interaction) {
         let userInput = interaction.options.getString("target")
         const nf = new Intl.NumberFormat('en-US');
@@ -30,6 +36,14 @@ module.exports = {
             apiSecret: process.env.LASTFM_SECRET,
             username: "violetweather"
         })
+
+        function killHTML(str) {
+            if ((str===null) || (str===''))
+                return false;
+            else
+            str = str.toString();
+            return str.replace(/<(?:"[^"]*"['"]*|'[^']*'['"]*|[^'">])+>/g, ' ');
+        }
 
         if(interaction.options.getSubcommand() === "info") {
             try {
@@ -102,30 +116,84 @@ module.exports = {
             }
         }
 
-        // if(interaction.options.getSubcommand() === "chart") {
-        //     try {
-        //         let weeklyArtistChartParms = {
-        //             user: userInput
-        //         }
+        if(interaction.options.getSubcommand() === "top") {
+            try {
+                let artists = [];
+                let embeds = [];
 
-        //         let weeklyArtistChart = await lfm.user_getWeeklyArtistChart(weeklyArtistChartParms)
+                for (let i = 0; i <= 4; i++) { 
+                    let weeklyArtistChartParms = {
+                        user: userInput
+                    }
+    
+                    let weeklyArtistChart = await lfm.user_getWeeklyArtistChart(weeklyArtistChartParms)
+                    let wa = await weeklyArtistChart.artist[i]
 
-        //         let artistChart = [];
-        //         await weeklyArtistChart.artist.forEach(async a => {
-        //             artistChart.push(`**Artist Name**: [${a.name}](${a.url}) \n **Scrobbles**: ${a.playcount}`)
-        //         });
+                    let artistMoreInfoParms = {
+                        mbid: wa.mbid
+                    }
 
-        //         let embed = new EmbedBuilder()
-        //         .setColor("LuminousVividPink")
-        //         .setDescription(artistChart.join('\n \n').slice(0, 2000))
+                    let artistInfo = await lfm.artist_getInfo(artistMoreInfoParms)
 
-        //         interaction.reply({embeds:[embed]})
-        //     } catch(err) {
-        //         interaction.reply({content: "There was an error while trying to find the user's information.", ephemeral: true})
-        //         return console.log(err);
-        //     }
-        // }
+                    let embed = new EmbedBuilder()
+                    .setColor("LuminousVividPink")
 
+                    .addFields(
+                        { name: `User stats`,
+                            value: [
+                                `**👤 [${wa.name}](${wa.url})**`,
+                                `🎶 ${nf.format(wa.playcount)} scrobbles`,
+                            ].join("\n"),
+                        },
+                    )
 
+                    if(artistInfo.bio) {
+                        embed.setDescription(killHTML(artistInfo.bio.summary))
+                    }
+
+                    if(artistInfo.image) {
+                        embed.setImage(artistInfo.image[2]["#text"])
+                    }
+
+                    if(artistInfo.stats) {
+                        embed.addFields(
+                            { name: `Site-wide stats`,
+                                value: [
+                                    `👤 ${nf.format(artistInfo.stats.listeners)} listeners`,
+                                    `🎶 ${nf.format(artistInfo.stats.playcount)} scrobbles`,
+                                ].join("\n"),
+                            },
+                        )
+                    }
+                    embeds.push(embed)
+                }
+
+                await pagination({
+                    embeds: embeds, /** Array of embeds objects */
+                    author: interaction.member.user,
+                    interaction: interaction,
+                    ephemeral: false,
+                    time: 40000, /** 20 seconds */
+                    disableButtons: true, /** Remove buttons after timeout */
+                    fastSkip: false,
+                    pageTravel: false,
+                    buttons: [
+                        {
+                            type: ButtonTypes.previous,
+                            label: 'Previous Page',
+                            style: ButtonStyles.Primary
+                        },
+                        {
+                            type: ButtonTypes.next,
+                            label: 'Next Page',
+                            style: ButtonStyles.Success
+                        }
+                    ]
+                });
+            } catch(err) {
+                interaction.reply({content: "There was an error while trying to find the user's information.", ephemeral: true})
+                return console.log(err);
+            }
+        }
     }
 }

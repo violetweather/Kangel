@@ -55,16 +55,19 @@ module.exports = {
                                                     {name: '/st/', value: 'st'},
                                         ))),
     async execute(interaction) {
+        // command setup
         const nf = new Intl.NumberFormat('en-US');
-
         const { options, user, guild } = interaction;
         let data = await accountSchema.findOne({User: interaction.user.id}).catch(err => {})
+
+        // randomizers
         const randomStress = Math.floor(Math.random() * (stressMax - stressMin + 1) + stressMin);
         const randomMental = Math.floor(Math.random() * (mentalMax - mentalMin + 1) + mentalMin);
         const randomAffection = Math.floor(Math.random() * (affectionMax - affectionMin + 1) + affectionMin);
         const values = Object.values(streamComments)
         const randomValue = values[parseInt(Math.random() * values.length)]
 
+        // functions
         async function crystalDrop(e) {
             var d = Math.random();
             // random drop!
@@ -87,7 +90,48 @@ module.exports = {
             }
         }
 
-        
+        async function randomKangelAction(e) {
+            if(data.Wallet > 0) {
+                if(data.MentalDarknessStat > 65) {
+                    var f = Math.random();
+
+                    if(f > 0.7) {
+                        if(data.Wallet < 120) {
+                            e.channel.send(`**Kangel** wasted ${data.Wallet} Angel coins on alcohol.. (Mental darkness too high!)`)
+                            try {
+                                await accountSchema.findOneAndUpdate(
+                                    { User: interaction.user.id},
+                                    {
+                                        $inc: {
+                                            Wallet: -data.Wallet,
+                                        }
+                                    }
+                                )
+                            } catch(err) {
+                                console.log(err);
+                            }
+                            return;
+                        }
+                        try {
+                            await accountSchema.findOneAndUpdate(
+                                { User: interaction.user.id},
+                                {
+                                    $inc: {
+                                        Wallet: -120,
+                                    }
+                                }
+                            )
+                        } catch(err) {
+                            console.log(err);
+                        }
+    
+                        e.channel.send("**Kangel** wasted 120 Angel coins on alcohol.. (Mental darkness too high!)")
+                    }
+                }
+            }
+        }
+
+        await randomKangelAction(interaction)
 
         switch(options.getSubcommand()) {
             case "sillies": {
@@ -290,7 +334,7 @@ module.exports = {
                             { name: `<:heart:1155448985956397078> Kangel completed her daily stream!`,
                                 value: [
                                     `Kangel gained **${randomFollower*1.1.toFixed(0)} new followers**!`,
-                                    `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.1)} in Ad Revenue**!`,
+                                    `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.1)} in donations**!`,
                                     `Kangel's stress went up by **${nf.format(randomStress*1.2)}**!`,
                                     `Kangel's affection went down by **${nf.format(randomAffection*0.3)}**!`,
                                     `Kangel's mental darkness went up by **${nf.format(randomMental*1.1)}**!`
@@ -311,7 +355,7 @@ module.exports = {
                             { name: `<:heart:1155448985956397078> Kangel completed her daily stream!`,
                                 value: [
                                     `Kangel gained **${randomFollower*1.00.toFixed(0)} new followers**!`,
-                                    `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.00)} in Ad Revenue**!`,
+                                    `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.00)} in donations**!`,
                                     `Kangel's stress went up by **${nf.format(randomStress*1.00)}**!`,
                                     `Kangel's affection went down by **${nf.format(randomAffection*0.1)}**!`,
                                     `Kangel's mental darkness went up by **${nf.format(randomMental*1.2)}**!`
@@ -332,7 +376,7 @@ module.exports = {
                             { name: `<:heart:1155448985956397078> Kangel completed her daily stream!`,
                                 value: [
                                     `Kangel gained **${randomFollower*1.4.toFixed(0)} new followers**!`,
-                                    `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.2)} in Ad Revenue**!`,
+                                    `Kangel earned <:coins:1163712428975079456>**${nf.format(randomAmount*1.2)} in donations**!`,
                                     `Kangel's stress went up by **${nf.format(randomStress*1.4)}**!`,
                                     `Kangel's affection went down by **${nf.format(randomAffection*0.6)}**!`,
                                     `Kangel's mental darkness went up by **${nf.format(randomMental*1.1)}**!`

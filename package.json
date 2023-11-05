@@ -13,6 +13,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@devraelfreeze/discordjs-pagination": "^2.7.6",
     "@google-cloud/translate": "^8.0.1",
     "@superchupu/topgg-autoposter": "^2.0.2",
     "api": "^6.1.1",
