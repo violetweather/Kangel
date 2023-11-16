@@ -23,7 +23,7 @@ module.exports = {
         const currencyTo = interaction.options.getString('to');
         const currencyAmount = interaction.options.getString('amount');
 
-        let currencyURL = `https://exchange-rates.abstractapi.com/v1/convert?api_key=dc36b21bfb134631a5df3575ebd3f559&base=${currencyFrom}&target=${currencyTo}&base_amount=${currencyAmount}`
+        let currencyURL = `https://exchange-rates.abstractapi.com/v1/convert?api_key=${process.env.ABSTRACT_TOKEN}&base=${currencyFrom}&target=${currencyTo}&base_amount=${currencyAmount}`
         let currencyAPIRes = await axios.get(currencyURL)
             .catch(function (error) {
                 if (error.response) {
